@@ -20,19 +20,25 @@ const OrderItem = ({ order }) => (
         </Badge>
       </div>
       <p className='text-sm text-gray-600 mb-2'>{formatDate(order.orderDate)}</p>
-      <div className='flex items-start'>
-        <img
-          src={order.jerseys[0].jersey.images[0]}
+      <div className='flex items-center'>
+       
+        <div className='flex flex-col gap-2'>
+        
+       {order.jerseys.map((jersey,i)=>(
+         <div className='flex gap-1 items-center'>
+          <img
+          src={jersey.jersey.images[0]}
           alt={'product image'}
           className='w-16 h-16 object-contain rounded mr-4'
         />
-        <div className='flex flex-col gap-2'>
-       {order.jerseys.map((jersey,i)=>(
-         <div>
-         <p className='font-medium'>{jersey.jersey.name}</p>
+        <div>
+        <p className='font-medium'>{jersey.jersey.name}</p>
          <p className='text-sm text-gray-600'>Variant: {jersey.jersey.variant}</p>
          <p className='text-sm text-gray-600'>Quantity: {jersey.quantity}</p>
          <p className='text-sm text-gray-600'>Size: {jersey.size}</p>
+          
+        </div>
+  
        </div>
        ))}
        </div>
