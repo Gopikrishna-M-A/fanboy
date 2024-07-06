@@ -49,12 +49,13 @@ export const CartProvider = ({ children }) => {
     fetchCart();
   }, [user]);
 
-  const addToCart = async (jerseyId, quantity) => {
+  const addToCart = async (jerseyId, quantity, size) => {
     setIsLoading(true);
     try {
       const response = await axios.post(`/api/carts`, {
         jerseyId,
-        quantity
+        quantity,
+        size
       });
       
       // Update the cart with the server response
@@ -67,17 +68,17 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  const removeFromCart = async (jerseyId) => {
+  const removeFromCart = async (jerseyId,size) => {
     // Optimistically update the cart
-    setCart(prevCart => {
-      const updatedItems = prevCart.items.filter(item => item.jersey._id !== jerseyId);
-      const updatedCart = { ...prevCart, items: updatedItems };
-      updateTotals(updatedCart);
-      return updatedCart;
-    });
+    // setCart(prevCart => {
+    //   const updatedItems = prevCart.items.filter(item => item.jersey._id !== jerseyId);
+    //   const updatedCart = { ...prevCart, items: updatedItems };
+    //   updateTotals(updatedCart);
+    //   return updatedCart;
+    // })
 
     try {
-      const response = await axios.delete(`/api/carts?id=${jerseyId}`);
+      const response = await axios.delete(`/api/carts?id=${jerseyId}&size=${size}`);
       // Update with the server response
       setCart(response.data);
       updateTotals(response.data);

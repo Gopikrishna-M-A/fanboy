@@ -5,28 +5,62 @@ import Team from './models/Team';
 export async function getJerseys(limit = 10, page = 1) {
   await dbConnect();
 
-  // const skip = (page - 1) * limit;
+  // const jerseys = await Jersey.find({})
+  //   .lean();
 
-  const jerseys = await Jersey.find({}).populate({
+    const allJerseys = await Jersey.find().sort({ name: 1 }).populate({
       path: 'team',
       model: Team
   })
-    // .skip(skip)
-    // .limit(limit)
-    .lean();
 
-  return JSON.parse(JSON.stringify(jerseys));
+    // Create a Map to store unique jerseys
+    const uniqueJerseys = new Map();
+
+    // Iterate through all jerseys and keep only the first occurrence of each name
+    allJerseys.forEach(jersey => {
+      if (!uniqueJerseys.has(jersey.name)) {
+        uniqueJerseys.set(jersey.name, jersey);
+      }
+    });
+
+    // Convert the Map values back to an array
+    const distinctJerseys = Array.from(uniqueJerseys.values());
+
+  return JSON.parse(JSON.stringify(distinctJerseys));
 }
 
 export async function getJerseyById(id) {
   await dbConnect();
 
-  const jersey = await Jersey.findById(id).populate({
+  const mainJersey = await Jersey.findById(id).populate({
     path: 'team',
     model: Team
-}).lean();
+  }).lean();
 
-  return jersey ? JSON.parse(JSON.stringify(jersey)) : null;
+  if (!mainJersey) {
+    return null;
+  }
+
+  // Find all jerseys with the same name
+  const allVariants = await Jersey.find({ name: mainJersey.name }).populate({
+    path: 'team',
+    model: Team
+  }).lean();
+
+  // Organize variants
+  const variants = {
+    firstCopy: allVariants.find(j => j.variant === 'firstCopy') || null,
+    master: allVariants.find(j => j.variant === 'master') || null,
+    player: allVariants.find(j => j.variant === 'player') || null
+  };
+
+  // Combine main jersey data with variants
+  const result = {
+    ...mainJersey,
+    variants
+  };
+
+  return result ? JSON.parse(JSON.stringify(result)) : null;
 }
 
 export async function getJerseysByTeam(teamId) {

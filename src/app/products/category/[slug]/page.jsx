@@ -2,7 +2,8 @@ import React from 'react'
 
 const page = () => {
   return (
-    <div>fav</div>
+    <div className='mt-14
+    '>page</div>
   )
 }
 

@@ -28,10 +28,10 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const { jerseyId, quantity } = await request.json()
+  const { jerseyId, quantity, size } = await request.json()
 
   try {
-    const cart = await upsertCartItem(session.user.id, jerseyId, quantity)
+    const cart = await upsertCartItem(session.user.id, jerseyId, quantity, size)
     return NextResponse.json(cart)
   } catch (error) {
     console.error("Failed to add/update item in cart:", error)
@@ -47,10 +47,11 @@ export async function DELETE(request) {
 
   const { searchParams } = new URL(request.url)
   const jerseyId = searchParams.get("id")
+  const size = searchParams.get("size")
 
   try {
     if (jerseyId) {
-      const cart = await removeFromCart(session.user.id, jerseyId)
+      const cart = await removeFromCart(session.user.id, jerseyId, size)
       return NextResponse.json(cart)
     } else {
       const result = await clearCart(session.user.id)

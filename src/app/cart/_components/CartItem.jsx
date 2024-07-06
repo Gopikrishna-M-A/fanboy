@@ -28,7 +28,8 @@ const CartItem = ({ cartItem, index }) => {
         </div>
         <div className='flex-grow '>
           <div level={4}>{cartItem.jersey.name}</div>
-          <p className='text-gray-300 '>{cartItem.jersey.team.name}</p>
+          <p className='text-gray-300 uppercase'>{cartItem.jersey.variant}</p>
+          <p className='text-gray-300 '>Size {cartItem.size}</p>
           <div className='text-right w-full'>
             <div level={5}>₹{cartItem.jersey.price.toFixed(2)}</div>
           </div>
@@ -38,14 +39,15 @@ const CartItem = ({ cartItem, index }) => {
       <div className='flex justify-end items-center'>
         {/* <Button className='py-1 px-4 text-sm' variant="outline" >Add to wishlist</Button> */}
         <div className='flex gap-5 items-center'>
-        <Trash onClick={()=>removeFromCart(cartItem.jersey._id)}/>
+        <Trash onClick={()=>removeFromCart(cartItem.jersey._id,cartItem.size)}/>
           <div className='bg-gray-100 w-24 h-9 rounded-full p-1 flex items-center justify-between'>
             <div
               onClick={() => {
                 if (cartItem.quantity > 1) {
                   addToCart(
                     cartItem.jersey._id,
-                    - 1
+                    - 1,
+                    cartItem.size
                   )
                 }
               }}
@@ -57,7 +59,8 @@ const CartItem = ({ cartItem, index }) => {
               onClick={() => {
                 addToCart(
                   cartItem.jersey._id,
-                  1
+                  1,
+                  cartItem.size
                 )
               }}
               className='w-7 h-7 bg-white rounded-full flex items-center justify-center'>

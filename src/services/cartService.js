@@ -18,7 +18,8 @@ export async function getCartByUserId(userId) {
   return cart ? JSON.parse(JSON.stringify(cart)) : null;
 }
 
-export async function upsertCartItem(userId, jerseyId, quantity) {
+export async function upsertCartItem(userId, jerseyId, quantity, size) {
+  console.log("size services",size);
   await dbConnect();
 
   let cart = await Cart.findOne({ customer: userId });
@@ -34,20 +35,20 @@ export async function upsertCartItem(userId, jerseyId, quantity) {
   }
 
   const existingItemIndex = cart.items.findIndex(
-    item => item.jersey.toString() === jerseyId
+    item => item.jersey.toString() === jerseyId && item.size === size
   );
 
   if (existingItemIndex !== -1) {
     cart.items[existingItemIndex].quantity += quantity;
   } else {
-    cart.items.push({ jersey: jerseyId, quantity });
+    cart.items.push({ jersey: jerseyId, quantity, size });
   }
 
   await cart.save();
   return getCartByUserId(userId);
 }
 
-export async function removeFromCart(userId, jerseyId) {
+export async function removeFromCart(userId, jerseyId, size) {
   await dbConnect();
 
   let cart = await Cart.findOne({ customer: userId });
@@ -56,7 +57,10 @@ export async function removeFromCart(userId, jerseyId) {
     return null;
   }
 
-  cart.items = cart.items.filter(item => item.jersey.toString() !== jerseyId);
+  cart.items = cart.items.filter(item => 
+    !(item.jersey.toString() === jerseyId && item.size === size)
+  );
+
   await cart.save();
   return getCartByUserId(userId);
 }

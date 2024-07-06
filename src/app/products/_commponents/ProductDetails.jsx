@@ -1,4 +1,4 @@
-"use client"
+'use client'
 import React, { useState } from "react"
 import {
   ChevronLeft,
@@ -11,25 +11,28 @@ import {
   Calendar,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { useCart } from "@/contexts/cart"
 
-const ProductDetails = ({ jersey }) => {
+const ProductDetails = ({ jerseyData }) => {
+  // console.log("jerseyData",jerseyData);
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  const [selectedSize, setSelectedSize] = useState(jersey.size)
-  const [selectedVariant, setSelectedVariant] = useState(jersey.variant)
+  const [selectedSize, setSelectedSize] = useState("")
+  const [selectedVariant, setSelectedVariant] = useState(jerseyData.variant)
   const { addToCart } = useCart()
 
-  console.log("jersey",jersey);
+  const jersey = jerseyData.variants[selectedVariant] || jerseyData
+
   const nextImage = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % jersey.images.length)
   }
@@ -46,6 +49,11 @@ const ProductDetails = ({ jersey }) => {
     return new Date(dateString).toLocaleDateString(undefined, options)
   }
 
+  const handleVariantChange = (variant) => {
+    setSelectedVariant(variant)
+    setSelectedSize("")  // Reset size when changing variant
+  }
+
   return (
     <div className='max-w-4xl mx-auto p-4 space-y-6 mb-32'>
       <Card>
@@ -56,7 +64,7 @@ const ProductDetails = ({ jersey }) => {
                 jersey.images[currentImageIndex] || "/api/placeholder/400/400"
               }
               alt={jersey.name}
-              className='w-full h-full object-cover rounded-lg'
+              className='w-full h-full object-contain rounded-lg'
             />
             <Button
               variant='outline'
@@ -96,24 +104,16 @@ const ProductDetails = ({ jersey }) => {
                 Size
               </label>
               <div className="flex gap-2">
-                <Button variant='outline'>S</Button>
-                <Button variant='outline'>M</Button>
-                <Button variant='outline'>L</Button>
-                <Button variant='outline'>XL</Button>
-                <Button variant='outline'>XXL</Button>
+                {["S", "M", "L", "XL", "XXL"].map((size) => (
+                  <Button 
+                    key={size} 
+                    variant={selectedSize === size ? 'default' : 'outline'}
+                    onClick={() => setSelectedSize(size)}
+                  >
+                    {size}
+                  </Button>
+                ))}
               </div>
-              {/* <Select value={selectedSize} onValueChange={setSelectedSize}>
-                <SelectTrigger className='w-full'>
-                  <SelectValue placeholder='Select size' />
-                </SelectTrigger>
-                <SelectContent>
-                  {["S", "M", "L", "XL", "XXL"].map((size) => (
-                    <SelectItem key={size} value={size}>
-                      {size}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select> */}
             </div>
 
             <div>
@@ -121,28 +121,26 @@ const ProductDetails = ({ jersey }) => {
                 Variant
               </label>
               <div className="flex gap-2">
-                <Button variant='outline'>First Copy</Button>
-                <Button variant='outline'>Player</Button>
-                <Button variant='outline'>Master</Button>
+                {Object.keys(jerseyData.variants).map((variant) => (
+                  <Button 
+                    key={variant} 
+                    variant={selectedVariant === variant ? 'default' : 'outline'}
+                    onClick={() => handleVariantChange(variant)}
+                    className='uppercase'
+                  >
+                    {variant}
+                  </Button>
+                ))}
               </div>
-              {/* <Select
-                value={selectedVariant}
-                onValueChange={setSelectedVariant}>
-                <SelectTrigger className='w-full'>
-                  <SelectValue placeholder='Select variant' />
-                </SelectTrigger>
-                <SelectContent>
-                  {["firstCopy", "master", "player"].map((variant) => (
-                    <SelectItem key={variant} value={variant}>
-                      {variant}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select> */}
             </div>
           </div>
 
-          <Button className='w-full' size='lg' onClick={()=>addToCart(jersey._id,1)}>
+          <Button 
+            className='w-full' 
+            size='lg' 
+            onClick={() => addToCart(jersey._id, 1,selectedSize)}
+            disabled={!selectedSize}
+          >
             <ShoppingCart className='mr-2 h-4 w-4' /> Add to Cart
           </Button>
         </CardContent>
@@ -165,14 +163,14 @@ const ProductDetails = ({ jersey }) => {
                       <span className='text-sm font-medium text-gray-500'>
                         Category
                       </span>
-                      <span className='text-lg font-semibold'>{jersey.category}</span>
+                      <span className='text-lg font-semibold uppercase'>{jersey.category}</span>
                     </div>
                   </div>
                   <div className='flex items-center space-x-3'>
                     <Users className='h-6 w-6 text-green-500' />
                     <div className="flex flex-col">
                       <span className='text-sm font-medium text-gray-500'>Team</span>
-                      <span className='text-lg font-semibold'>
+                      <span className='text-lg font-semibold uppercase'>
                         {jersey.team.name}
                       </span>
                     </div>
@@ -183,7 +181,7 @@ const ProductDetails = ({ jersey }) => {
                       <span className='text-sm font-medium text-gray-500'>
                         Variant
                       </span>
-                      <span className='text-lg font-semibold'>{jersey.variant}</span>
+                      <span className='text-lg font-semibold uppercase'>{jersey.variant}</span>
                     </div>
                   </div>
                 </div>
@@ -213,21 +211,142 @@ const ProductDetails = ({ jersey }) => {
                   </div>
                 </div>
               </div>
-              <div className='mt-6'>
+              {/* <div className='mt-6'>
                 <h3 className='text-lg font-semibold mb-2'>Description</h3>
                 <span className='text-gray-700'>{jersey.description}</span>
-              </div>
+              </div> */}
             </CardContent>
           </Card>
         </TabsContent>
-        <TabsContent value='sizeChart' className='mt-4'>
+        <TabsContent value='sizeChart' className='mt-4 flex flex-col gap-4'>
           <Card>
+            <CardHeader>FIRSTCOPY & MASTER VERSION</CardHeader>
             <CardContent className='p-4'>
-              <img
-                src={jersey.sizeChart || "/api/placeholder/400/300"}
-                alt='Size Chart'
-                className='w-full h-auto'
-              />
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Size</TableHead>
+                    <TableHead>Width (inches)</TableHead>
+                    <TableHead>Width (cm)</TableHead>
+                    <TableHead>Length (inches)</TableHead>
+                    <TableHead>Length (cm)</TableHead>
+                    <TableHead>Sleeve (inches)</TableHead>
+                    <TableHead>Sleeve (cm)</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>S</TableCell>
+                    <TableCell>38</TableCell>
+                    <TableCell>97</TableCell>
+                    <TableCell>26</TableCell>
+                    <TableCell>68</TableCell>
+                    <TableCell>8</TableCell>
+                    <TableCell>20</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>M</TableCell>
+                    <TableCell>40</TableCell>
+                    <TableCell>102</TableCell>
+                    <TableCell>27</TableCell>
+                    <TableCell>69</TableCell>
+                    <TableCell>8</TableCell>
+                    <TableCell>21</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>L</TableCell>
+                    <TableCell>42</TableCell>
+                    <TableCell>107</TableCell>
+                    <TableCell>28</TableCell>
+                    <TableCell>71</TableCell>
+                    <TableCell>9</TableCell>
+                    <TableCell>22</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>XL</TableCell>
+                    <TableCell>44</TableCell>
+                    <TableCell>112</TableCell>
+                    <TableCell>28</TableCell>
+                    <TableCell>72</TableCell>
+                    <TableCell>9</TableCell>
+                    <TableCell>23</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>XXL</TableCell>
+                    <TableCell>46</TableCell>
+                    <TableCell>117</TableCell>
+                    <TableCell>29</TableCell>
+                    <TableCell>73</TableCell>
+                    <TableCell>10</TableCell>
+                    <TableCell>25</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>PLAYER VERSION</CardHeader>
+            <CardContent className='p-4'>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Size</TableHead>
+                    <TableHead>Width (inches)</TableHead>
+                    <TableHead>Width (cm)</TableHead>
+                    <TableHead>Length (inches)</TableHead>
+                    <TableHead>Length (cm)</TableHead>
+                    <TableHead>Sleeve (inches)</TableHead>
+                    <TableHead>Sleeve (cm)</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>S</TableCell>
+                    <TableCell>38</TableCell>
+                    <TableCell>97</TableCell>
+                    <TableCell>26</TableCell>
+                    <TableCell>68</TableCell>
+                    <TableCell>8</TableCell>
+                    <TableCell>20</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>M</TableCell>
+                    <TableCell>40</TableCell>
+                    <TableCell>102</TableCell>
+                    <TableCell>27</TableCell>
+                    <TableCell>69</TableCell>
+                    <TableCell>8</TableCell>
+                    <TableCell>21</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>L</TableCell>
+                    <TableCell>42</TableCell>
+                    <TableCell>107</TableCell>
+                    <TableCell>28</TableCell>
+                    <TableCell>71</TableCell>
+                    <TableCell>9</TableCell>
+                    <TableCell>22</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>XL</TableCell>
+                    <TableCell>44</TableCell>
+                    <TableCell>112</TableCell>
+                    <TableCell>28</TableCell>
+                    <TableCell>72</TableCell>
+                    <TableCell>9</TableCell>
+                    <TableCell>23</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>XXL</TableCell>
+                    <TableCell>46</TableCell>
+                    <TableCell>117</TableCell>
+                    <TableCell>29</TableCell>
+                    <TableCell>73</TableCell>
+                    <TableCell>10</TableCell>
+                    <TableCell>25</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
             </CardContent>
           </Card>
         </TabsContent>

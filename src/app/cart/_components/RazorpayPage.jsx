@@ -18,6 +18,7 @@ const RazorpayPage = ({ setCurrent }) => {
         jersey: item.jersey._id, 
         quantity: item.quantity,
         price: item.jersey.price,
+        size: item.size
       };
     });
   }

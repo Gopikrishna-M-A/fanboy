@@ -1,32 +1,35 @@
 "use client"
 import React, { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Home, Search, Logs, Heart, User } from "lucide-react"
+import { Home, Layers2, Logs, ShoppingCart, User } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
-
-const NavItem = ({ id, Icon, label, path, isActive, onClick }) => (
-  <Link
-    href={path}
-    className={`
+import { useCart } from "@/contexts/cart"
+const NavItem = ({ id, Icon, label, path, isActive, onClick }) => {
+  const { cart } = useCart()
+  return (
+    <Link
+      href={path}
+      className={`
       relative z-10 flex flex-col items-center justify-center w-12 h-12
       transition-all duration-300 ease-in-out
       ${isActive ? "text-white" : "text-gray-400 hover:text-gray-200"}
     `}
-    onClick={() => onClick(id, path)}>
-    <div className="relative">
-      <Icon size={24} />
-      {id === "cart" && cartItems > 0 && (
-        <Badge
-          variant="destructive"
-          className="absolute -top-2 -right-2 animate-pulse">
-          {cartItems}
-        </Badge>
-      )}
-    </div>
-    <span className="text-xs mt-1">{label}</span>
-  </Link>
-)
+      onClick={() => onClick(id, path)}>
+      <div className='relative'>
+        <Icon size={24} />
+        {id === "cart" && cart?.items?.length > 0 && (
+          <Badge
+            variant='destructive'
+            className='absolute -top-2 -right-2 animate-pulse'>
+            {cart.items.length}
+          </Badge>
+        )}
+      </div>
+      <span className='text-xs mt-1'>{label}</span>
+    </Link>
+  )
+}
 
 const Footer = () => {
   const [activeIcon, setActiveIcon] = useState("home")
@@ -59,34 +62,34 @@ const Footer = () => {
           </defs>
         </svg>
         <NavItem
-          id="home"
+          id='home'
           Icon={Home}
-          label="Home"
-          path="/"
+          label='Home'
+          path='/'
           isActive={activeIcon === "home"}
           onClick={handleNavClick}
         />
         <NavItem
-          id="Logs"
+          id='Logs'
           Icon={Logs}
-          label="Orders"
-          path="/orders"
+          label='Orders'
+          path='/orders'
           isActive={activeIcon === "Logs"}
           onClick={handleNavClick}
         />
         <NavItem
-          id="favorites"
-          Icon={Heart}
-          label="Favorites"
-          path="/favorites"
-          isActive={activeIcon === "favorites"}
+          id='cart'
+          Icon={ShoppingCart}
+          label='Cart'
+          path='/cart'
+          isActive={activeIcon === "cart"}
           onClick={handleNavClick}
         />
         <NavItem
-          id="profile"
+          id='profile'
           Icon={User}
-          label="Profile"
-          path="/profile"
+          label='Profile'
+          path='/profile'
           isActive={activeIcon === "profile"}
           onClick={handleNavClick}
         />
