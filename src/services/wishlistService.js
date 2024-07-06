@@ -1,4 +1,5 @@
 import dbConnect from './db';
+import Team from './models/Team';
 import Wishlist from './models/Wishlist';
 
 export async function getWishlist(userId) {
@@ -8,7 +9,7 @@ export async function getWishlist(userId) {
     path: 'jerseys',
     populate: {
       path: 'team',
-      model: 'Team',
+      model: Team,
     },
   });
 

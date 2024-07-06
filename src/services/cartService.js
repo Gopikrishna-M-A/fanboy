@@ -3,12 +3,13 @@ import Cart from './models/Cart';
 import Jersey from './models/Jersey'; // Assuming you have a Jersey model
 import Team from './models/Team';
 
+
 export async function getCartByUserId(userId) {
   await dbConnect();
 
   const cart = await Cart.findOne({ customer: userId }).populate({
     path: 'items.jersey',
-    model: 'Jersey',
+    model: Jersey,
     populate: {
       path: 'team',
       model: Team

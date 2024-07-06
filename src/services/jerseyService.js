@@ -1,5 +1,6 @@
 import dbConnect from './db';
 import Jersey from './models/Jersey';
+import Team from './models/Team';
 
 export async function getJerseys(limit = 10, page = 1) {
   await dbConnect();
@@ -8,7 +9,7 @@ export async function getJerseys(limit = 10, page = 1) {
 
   const jerseys = await Jersey.find({}).populate({
       path: 'team',
-      model: 'Team'
+      model: Team
   })
     // .skip(skip)
     // .limit(limit)
@@ -22,7 +23,7 @@ export async function getJerseyById(id) {
 
   const jersey = await Jersey.findById(id).populate({
     path: 'team',
-    model: 'Team'
+    model: Team
 }).lean();
 
   return jersey ? JSON.parse(JSON.stringify(jersey)) : null;
@@ -33,7 +34,7 @@ export async function getJerseysByTeam(teamId) {
 
   const jerseys = await Jersey.find({ team:teamId }).populate({
     path: 'team',
-    model: 'Team'
+    model: Team
 }).lean();
 
   return JSON.parse(JSON.stringify(jerseys));
