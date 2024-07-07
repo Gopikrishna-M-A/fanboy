@@ -26,7 +26,11 @@ const Profile = () => {
   const { user, isLoading, isAuthenticated } = useAuth()
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <LottieLoader />
+      </div>
+    );
   }
 
   if (!isAuthenticated) {

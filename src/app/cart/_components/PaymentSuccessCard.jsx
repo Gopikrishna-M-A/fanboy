@@ -21,7 +21,7 @@ const PaymentSuccessCard = ({ customerName }) => {
         </p>
       </CardContent>
       <CardFooter className="flex justify-center">
-        <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+        <Button>
           View Order Details
         </Button>
       </CardFooter>

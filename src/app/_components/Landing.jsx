@@ -22,7 +22,7 @@ const Landing = ({ teams }) => {
           {teams.map((team, index) => (
             <div key={index} className="flex-shrink-0 mr-3">
               <Link href={`/products/team/${team._id}`} className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center relative">
-                <Image layout="fill" src={`/images/team/${index + 1}.png`} alt={team.name} className="object-cover rounded-full" />
+                <Image layout="fill" src={team.logo} alt={team.name} className="object-cover rounded-full" />
               </Link>
             </div>
           ))}
@@ -41,7 +41,7 @@ const Landing = ({ teams }) => {
 
       {/* Clubs Section */}
       <div className="mt-8 px-4">
-        <Link href="/products/category/clubs" className="block relative h-40 rounded-lg overflow-hidden">
+        <Link href="/products/category/club" className="block relative h-40 rounded-lg overflow-hidden">
           <Image layout="fill" src="/images/banner/cat.jpg" alt="Club Jerseys" className="object-cover" />
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <span className="text-white text-2xl font-bold">Club Jerseys</span>

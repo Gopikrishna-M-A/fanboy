@@ -1,22 +1,25 @@
 'use client'
-import { Star } from 'lucide-react'
 import Link from 'next/link'
 
-const ProductCard = ({jersey}) => {
+const ProductCard = ({ jersey }) => {
+  console.log("jersey",jersey);
   return (
-    <Link href={`/products/${jersey?._id}`} className="flex flex-col w-40 bg-white shadow-md rounded-lg overflow-hidden m-2">
-      <img src={jersey.images[0]} alt={jersey?.name} className="w-full h-40 object-contain" />
-      <div className="p-2">
-        <h3 className="font-semibold text-sm truncate">{jersey?.name}</h3>
-        <p className="text-xs text-gray-500">{jersey?.category}</p>
-        {/* <div className="flex items-center mt-1">
-          <Star size={12} className="text-yellow-400 fill-current" />
-          <span className="text-xs ml-1">{4.9} (136)</span>
-        </div> */}
-        <div className="">
-          {/* <span className="text-sm font-bold">₹{jersey?.discountedPrice}</span>
-          <span className="text-xs text-gray-500 line-through ml-2">₹{jersey?.mrp}</span> */}
-          <span className="text-xs text-gray-300 line-clamp-2">{jersey?.description}</span>
+    <Link href={`/products/${jersey?._id}`} className="block w-full sm:w-64 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 rounded-lg overflow-hidden">
+      <div className="aspect-w-1 aspect-h-1 w-full">
+        <img 
+          src={jersey.images[0]} 
+          alt={jersey?.name} 
+          className="w-full h-full object-cover"
+        />
+      </div>
+      <div className="p-4">
+        <h3 className="font-semibold text-lg mb-1 truncate">{jersey?.name}</h3>
+        <p className="text-sm text-gray-600 mb-2 line-clamp-2">{jersey?.description}</p>
+        <div className="flex justify-between items-center">
+          <span className="text-sm font-medium text-gray-500">{jersey?.category}</span>
+          {/* {jersey?.price && (
+            <span className="text-sm font-bold text-blue-600">₹{jersey.price}</span>
+          )} */}
         </div>
       </div>
     </Link>

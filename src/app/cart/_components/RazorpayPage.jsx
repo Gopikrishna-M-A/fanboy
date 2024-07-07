@@ -4,6 +4,7 @@ import axios from "axios";
 import { useCart } from '@/contexts/cart';
 import { useAuth } from '@/hooks/useAuth'
 import PaymentSuccessCard from './PaymentSuccessCard'; 
+import LottieLoader from "@/components/LottieLoader";
 
 const RazorpayPage = ({ setCurrent }) => {
   const razorpayKEY = process.env.NEXT_PUBLIC_RAZORPAY_KEY;
@@ -112,7 +113,9 @@ const RazorpayPage = ({ setCurrent }) => {
     {paymentSuccess ? (
       <PaymentSuccessCard customerName={user.name} />
     ) : (
-      <div>Processing...</div>
+      <div className="flex justify-center items-center h-screen">
+      <LottieLoader />
+    </div>
     )}
   </div>
   );
