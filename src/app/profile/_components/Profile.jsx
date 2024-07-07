@@ -21,6 +21,7 @@ import {
   MapPin,
 } from "lucide-react"
 import { signIn, signOut } from "next-auth/react"
+import LottieLoader from "@/components/LottieLoader"
 
 const Profile = () => {
   const { user, isLoading, isAuthenticated } = useAuth()
