@@ -52,11 +52,14 @@ export async function getJerseyById(id) {
     .lean()
 
   // Organize variants
-  const variants = {
-    firstCopy: allVariants.find((j) => j.variant === "firstCopy") || null,
-    master: allVariants.find((j) => j.variant === "master") || null,
-    player: allVariants.find((j) => j.variant === "player") || null,
-  }
+  const variants = Object.fromEntries(
+    ["firstCopy", "master", "player"]
+      .map(variant => {
+        const found = allVariants.find(j => j.variant === variant);
+        return found ? [variant, found] : null;
+      })
+      .filter(Boolean)
+  );
 
   // Combine main jersey data with variants
   const result = {
