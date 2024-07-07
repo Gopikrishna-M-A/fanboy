@@ -12,19 +12,11 @@ import { useCart } from "@/contexts/cart"
 import { CircleHelp, ShoppingCart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import LottieLoader from "@/components/LottieLoader"
 
 const Cart = ({ setCurrent }) => {
-  const { cart, cartTotalPrice,isLoading } = useCart()
+  const { cart, cartTotalPrice } = useCart()
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <LottieLoader />
-      </div>
-    );
-  }
-  
+
 
   return (
     <div>

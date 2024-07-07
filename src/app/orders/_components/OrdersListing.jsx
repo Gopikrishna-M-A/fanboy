@@ -8,8 +8,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronDown, Search, Filter } from 'lucide-react';
 import OrderItem from "./OrderItem"
 import axios from 'axios';
-import LottieLoader from '@/components/LottieLoader';
-
 
 const OrdersListing = () => {
   const [orders,setOrders] = useState([])
@@ -39,13 +37,7 @@ const OrdersListing = () => {
     order.jerseys.some(j => j.jersey.toLowerCase().includes(searchTerm.toLowerCase()))
 );
 
-if (loading) {
-  return (
-    <div className="flex justify-center items-center h-screen">
-      <LottieLoader />
-    </div>
-  );
-}
+
 
 
   return (

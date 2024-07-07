@@ -21,7 +21,7 @@ const Landing = ({ teams }) => {
         <div className="flex overflow-x-auto pb-2 hide-scrollbar">
           {teams.map((team, index) => (
             <div key={index} className="flex-shrink-0 mr-3">
-              <Link href={`/products/team/${team._id}`} className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center relative">
+              <Link prefetch href={`/products/team/${team._id}`} className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center relative">
                 <Image layout="fill" src={team.logo} alt={team.name} className="object-cover rounded-full" />
               </Link>
             </div>
