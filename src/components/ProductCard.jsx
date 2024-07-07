@@ -1,15 +1,17 @@
 'use client'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const ProductCard = ({ jersey }) => {
-  console.log("jersey",jersey);
   return (
     <Link href={`/products/${jersey?._id}`} className="block w-full sm:w-64 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 rounded-lg overflow-hidden">
-      <div className="aspect-w-1 aspect-h-1 w-full">
-        <img 
-          src={jersey.images[0]} 
-          alt={jersey?.name} 
+      <div className="aspect-w-1 aspect-h-1 w-full relative">
+        <Image 
+          src={jersey?.images[0]} 
+          width={200}
+          height={200}
           className="w-full h-full object-cover"
+          alt={jersey?.name}
         />
       </div>
       <div className="p-4">

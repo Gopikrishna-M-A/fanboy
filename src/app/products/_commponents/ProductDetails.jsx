@@ -23,6 +23,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { useCart } from "@/contexts/cart"
+import Image from "next/image"
 
 const ProductDetails = ({ jerseyData }) => {
   // console.log("jerseyData",jerseyData);
@@ -59,13 +60,15 @@ const ProductDetails = ({ jerseyData }) => {
       <Card>
         <CardContent className='p-6'>
           <div className='relative aspect-square mb-4'>
-            <img
-              src={
-                jersey.images[currentImageIndex] || "/api/placeholder/400/400"
-              }
-              alt={jersey.name}
-              className='w-full h-full object-contain rounded-lg'
-            />
+          <div className="aspect-w-1 aspect-h-1 w-full relative">
+               <Image 
+          src={jersey.images[currentImageIndex]} 
+          width={200}
+          height={200}
+          className="w-full h-full object-cover"
+          alt={jersey?.name}
+        />
+        </div>
             <Button
               variant='outline'
               size='icon'
