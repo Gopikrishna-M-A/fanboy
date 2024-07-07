@@ -1,7 +1,9 @@
 import crypto from 'crypto';
 import razorpay from 'razorpay';
 import Order from './models/Order';
-// Function to generate a random order number
+
+
+
 function generateOrderNumber() {
   // Generate the random color string using crypto for enhanced randomness
   const randomBytes = crypto.randomBytes(3);
@@ -175,15 +177,13 @@ export async function getOrderDetails(orderId) {
 }
 
 export async function getOrderHistory(userId){
-  console.log("userid in services history", userId);
   try {
     const orderHistory = await Order.find({ customer: userId })
       .populate('jerseys.jersey')
       .sort({ orderDate: -1 });
-      console.log("orderHistory",orderHistory);
     return orderHistory;
   } catch (error) {
     console.error('Error getting order history:', error);
-    throw new Error('An error occurred while fetching order history');
+    throw error; 
   }
 }

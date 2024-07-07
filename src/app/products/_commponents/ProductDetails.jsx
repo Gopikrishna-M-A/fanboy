@@ -150,10 +150,10 @@ const ProductDetails = ({ jerseyData }) => {
       </Card>
 
       <Tabs defaultValue='details' className='w-full'>
-        <TabsList className='grid w-full grid-cols-3'>
+        <TabsList className='grid w-full grid-cols-2'>
           <TabsTrigger value='details'>Details</TabsTrigger>
           <TabsTrigger value='sizeChart'>Size Chart</TabsTrigger>
-          <TabsTrigger value='reviews'>Reviews</TabsTrigger>
+          {/* <TabsTrigger value='reviews'>Reviews</TabsTrigger> */}
         </TabsList>
         <TabsContent value='details' className='mt-4'>
           <Card>
@@ -166,14 +166,14 @@ const ProductDetails = ({ jerseyData }) => {
                       <span className='text-sm font-medium text-gray-500'>
                         Category
                       </span>
-                      <span className='text-lg font-semibold uppercase'>{jersey.category}</span>
+                      <span className='text-lg  capitalize'>{jersey.category}</span>
                     </div>
                   </div>
                   <div className='flex items-center space-x-3'>
                     <Users className='h-6 w-6 text-green-500' />
                     <div className="flex flex-col">
                       <span className='text-sm font-medium text-gray-500'>Team</span>
-                      <span className='text-lg font-semibold uppercase'>
+                      <span className=' capitalize'>
                         {jersey.team.name}
                       </span>
                     </div>
@@ -184,16 +184,14 @@ const ProductDetails = ({ jerseyData }) => {
                       <span className='text-sm font-medium text-gray-500'>
                         Variant
                       </span>
-                      <span className='text-lg font-semibold uppercase'>{jersey.variant}</span>
+                      <span className=' uppercase'>{jersey.variant}</span>
                     </div>
                   </div>
-                </div>
-                <div className='space-y-4'>
                   <div className='flex items-center space-x-3'>
                     <Package className='h-6 w-6 text-purple-500' />
                     <div>
                       <span className='text-sm font-medium text-gray-500'>Stock</span>
-                      <div className='text-lg font-semibold'>
+                      <div className=''>
                         {jersey.stock} available
                         <Badge variant='outline' className='ml-2'>
                           {jersey.stock > 10 ? "In Stock" : "Low Stock"}
@@ -207,7 +205,7 @@ const ProductDetails = ({ jerseyData }) => {
                       <span className='text-sm font-medium text-gray-500'>
                         Added on
                       </span>
-                      <span className='text-lg font-semibold'>
+                      <span className=''>
                         {formatDate(jersey.createdAt)}
                       </span>
                     </div>
@@ -353,13 +351,13 @@ const ProductDetails = ({ jerseyData }) => {
             </CardContent>
           </Card>
         </TabsContent>
-        <TabsContent value='reviews' className='mt-4'>
+        {/* <TabsContent value='reviews' className='mt-4'>
           <Card>
             <CardContent className='p-4'>
               <span>Reviews coming soon!</span>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabsContent> */}
       </Tabs>
     </div>
   )

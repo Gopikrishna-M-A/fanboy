@@ -1,5 +1,4 @@
 'use client'
-import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,30 +6,10 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronDown, Search, Filter } from 'lucide-react';
 import OrderItem from "./OrderItem"
-import axios from 'axios';
 
-const OrdersListing = () => {
-  const [orders,setOrders] = useState([])
+const OrdersListing = ({orders}) => {
+  console.log("orders",orders);
   const [searchTerm, setSearchTerm] = useState('');
-  const [loading,setLoading] = useState(false)
-
-  const getOrders = async () => {
-    setLoading(true)
-    try {
-        const res = await axios.get('/api/orders');
-        const data = res.data;
-        setOrders(data)
-    } catch (error) {
-      console.error("Error fetching orders:", error.message);
-      throw error;
-    }finally{
-      setLoading(false)
-    }
-  }
-
-  useEffect(()=>{
-      getOrders()
-  },[])
 
   const filteredOrders = orders?.filter(order => 
     order.orderNumber.includes(searchTerm) ||
