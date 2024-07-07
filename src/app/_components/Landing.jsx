@@ -11,7 +11,7 @@ const Landing = ({ teams }) => {
       <div className="relative h-52 bg-gray-300">
         <Image layout="fill" src="/images/banner/bg.webp" alt="Banner" className="object-cover" />
         <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-          <Link href='/products'><Button variant="secondary">SHOP NOW</Button></Link>
+          <Link prefetch href='/products'><Button variant="secondary">SHOP NOW</Button></Link>
         </div>
       </div>
 
@@ -31,7 +31,7 @@ const Landing = ({ teams }) => {
 
       {/* International Section */}
       <div className="mt-8 px-4">
-        <Link href="/products/category/international" className="block relative h-40 rounded-lg overflow-hidden">
+        <Link prefetch href="/products/category/international" className="block relative h-40 rounded-lg overflow-hidden">
           <Image layout="fill" src="/images/banner/cat.jpg" alt="International Jerseys" className="object-cover" />
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <span className="text-white text-2xl font-bold">International Jerseys</span>
@@ -41,7 +41,7 @@ const Landing = ({ teams }) => {
 
       {/* Clubs Section */}
       <div className="mt-8 px-4">
-        <Link href="/products/category/club" className="block relative h-40 rounded-lg overflow-hidden">
+        <Link prefetch href="/products/category/club" className="block relative h-40 rounded-lg overflow-hidden">
           <Image layout="fill" src="/images/banner/cat.jpg" alt="Club Jerseys" className="object-cover" />
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <span className="text-white text-2xl font-bold">Club Jerseys</span>
