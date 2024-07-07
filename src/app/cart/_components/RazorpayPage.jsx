@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useCart } from '@/contexts/cart';
 import { useAuth } from '@/hooks/useAuth'
+import PaymentSuccessCard from './PaymentSuccessCard'; 
 
 const RazorpayPage = ({ setCurrent }) => {
   const razorpayKEY = process.env.NEXT_PUBLIC_RAZORPAY_KEY;
@@ -77,10 +78,11 @@ const RazorpayPage = ({ setCurrent }) => {
           }).then(res => {
             if(res.status === 200){
               setPaymentSuccess(true);
-              // emptyCart()
-              setTimeout(() => {
-                window.location.reload(true);
-              }, 5000);
+              emptyCart()
+              // window.location.reload(true);
+              // setTimeout(() => {
+              //   window.location.reload(true);
+              // }, 5000);
             }
           })
 
@@ -107,12 +109,12 @@ const RazorpayPage = ({ setCurrent }) => {
 
   return (
     <div>
-      {paymentSuccess ? (
-           <div>success</div>
-      ) : (
-        <div>Processing...</div>
-      )}
-    </div>
+    {paymentSuccess ? (
+      <PaymentSuccessCard customerName={user.name} />
+    ) : (
+      <div>Processing...</div>
+    )}
+  </div>
   );
 };
 

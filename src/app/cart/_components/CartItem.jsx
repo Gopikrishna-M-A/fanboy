@@ -10,21 +10,17 @@ const CartItem = ({ cartItem, index }) => {
 
   const { addToCart, removeFromCart } = useCart()
 
-//   const removeCartItem = async () => {
-//     removeFromCart(cartItem.product._id, user._id)
-//   }
 
   return (
     <div
       className={`flex flex-col justify-between px-2 py-2 gap-3`}>
       <div className='flex gap-3'>
-        <div className='bg-gray-100 min-w-24 min-h-24 w-24 h-24 rounded-3xl flex justify-center items-center p-1 overflow-hidden'>
-          {/* <Image
-            preview={false}
+        <div className='min-w-24 min-h-24 w-24 h-24 flex justify-center items-center p-1 overflow-hidden'>
+          <Image
             width={70}
             height={70}
             src={cartItem.jersey.images[0]}
-          /> */}
+          />
         </div>
         <div className='flex-grow '>
           <div level={4}>{cartItem.jersey.name}</div>
@@ -41,7 +37,8 @@ const CartItem = ({ cartItem, index }) => {
         <div className='flex gap-5 items-center'>
         <Trash onClick={()=>removeFromCart(cartItem.jersey._id,cartItem.size)}/>
           <div className='bg-gray-100 w-24 h-9 rounded-full p-1 flex items-center justify-between'>
-            <div
+            <button
+              disabled={cartItem.quantity > 1 ? false: true}
               onClick={() => {
                 if (cartItem.quantity > 1) {
                   addToCart(
@@ -53,9 +50,9 @@ const CartItem = ({ cartItem, index }) => {
               }}
               className='w-7 h-7 bg-white rounded-full flex items-center justify-center'>
               -
-            </div>
+            </button>
             <div>{cartItem.quantity}</div>
-            <div
+            <button
               onClick={() => {
                 addToCart(
                   cartItem.jersey._id,
@@ -65,7 +62,7 @@ const CartItem = ({ cartItem, index }) => {
               }}
               className='w-7 h-7 bg-white rounded-full flex items-center justify-center'>
               +
-            </div>
+            </button>
           </div>
         </div>
       </div>

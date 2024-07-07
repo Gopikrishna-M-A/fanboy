@@ -8,13 +8,16 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronDown, Search, Filter } from 'lucide-react';
 import OrderItem from "./OrderItem"
 import axios from 'axios';
+import LottieLoader from '@/components/LottieLoader';
 
 
 const OrdersListing = () => {
   const [orders,setOrders] = useState([])
   const [searchTerm, setSearchTerm] = useState('');
+  const [loading,setLoading] = useState(false)
 
   const getOrders = async () => {
+    setLoading(true)
     try {
         const res = await axios.get('/api/orders');
         const data = res.data;
@@ -22,6 +25,8 @@ const OrdersListing = () => {
     } catch (error) {
       console.error("Error fetching orders:", error.message);
       throw error;
+    }finally{
+      setLoading(false)
     }
   }
 
@@ -33,6 +38,16 @@ const OrdersListing = () => {
     order.orderNumber.includes(searchTerm) ||
     order.jerseys.some(j => j.jersey.toLowerCase().includes(searchTerm.toLowerCase()))
 );
+
+if (loading) {
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <LottieLoader />
+    </div>
+  );
+}
+
+
   return (
     <div className="max-w-md mx-auto p-4 bg-gray-50 min-h-screen">
       <CardHeader className='p-0 py-2'>
@@ -68,3 +83,10 @@ const OrdersListing = () => {
 };
 
 export default OrdersListing;
+
+
+
+
+
+
+
