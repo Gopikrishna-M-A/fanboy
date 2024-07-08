@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-const JerseyCard = ({ imageUrl, title, subtitle }) => {
+const JerseyCard = ({ imageUrl, title, subtitle, path }) => {
   return (
-    <Link href='/products/category/club' className="relative w-full max-w-80 h-48 sm:h-64 rounded-lg overflow-hidden cursor-pointer hover:shadow-lg">
+    <Link href={`/products/category/${path}`} className="relative w-full max-w-80 h-48 sm:h-64 rounded-lg overflow-hidden cursor-pointer hover:shadow-lg">
       <Image
         src={imageUrl}
         alt={title}

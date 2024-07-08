@@ -12,15 +12,16 @@ const Landing = ({ teams, jerseys, clubs, international }) => {
   const cardsData = [
     {
       imageUrl: "/images/banner/cat.jpg",
-      title: "International",
-      subtitle: "Explore national team jerseys"
+      title: "Clubs",
+      subtitle: "Find your favorite club jerseys",
+      path:'club'
     },
     {
       imageUrl: "/images/banner/cat.jpg",
-      title: "Clubs",
-      subtitle: "Find your favorite club jerseys"
+      title: "International",
+      subtitle: "Explore national team jerseys",
+      path:'international'
     },
-    // Add more card data as needed
   ];
 
   useEffect(() => {
