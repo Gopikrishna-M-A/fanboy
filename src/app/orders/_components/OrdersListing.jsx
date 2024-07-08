@@ -8,7 +8,6 @@ import { ChevronDown, Search, Filter } from 'lucide-react';
 import OrderItem from "./OrderItem"
 
 const OrdersListing = ({orders}) => {
-  console.log("orders",orders);
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredOrders = orders?.filter(order => 

@@ -53,7 +53,7 @@ export async function getJerseyById(id) {
 
   // Organize variants
   const variants = Object.fromEntries(
-    ["firstCopy", "master", "player"]
+    ["firstcopy", "master", "player"]
       .map(variant => {
         const found = allVariants.find(j => j.variant === variant);
         return found ? [variant, found] : null;
