@@ -19,7 +19,7 @@ const OrdersListing = ({orders}) => {
 
 
   return (
-    <div className="mx-auto p-4 bg-gray-50 min-h-screen md:px-20 md:py-10">
+    <div className="mx-auto p-4 pb-20 bg-gray-50 min-h-screen md:px-20 md:py-10">
       <div className="">
       <CardHeader className='p-0 py-2'>
         <CardTitle className="text-2xl font-bold">My Orders</CardTitle>

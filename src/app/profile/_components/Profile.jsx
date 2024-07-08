@@ -215,7 +215,7 @@ const Profile = () => {
   }
 
   return (
-    <div className='bg-gray-100 min-h-screen pb-12 md:pb-24'>
+    <div className='bg-gray-100 pb-20 min-h-screen pb-12 md:pb-24'>
       <div className='container mx-auto p-4 md:p-8 space-y-6 max-w-4xl'>
         <Card>
           <CardContent className='pt-6'>
