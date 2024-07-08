@@ -11,8 +11,8 @@ const ProductsDisplay = ({ jerseys }) => {
   );
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100">
-      <main className="flex-grow overflow-y-auto p-4  pb-32">
+    <div className="flex flex-col min-h-screen bg-gray-100 md:px-20 md:py-10">
+      <main className="flex-grow p-4  pb-32">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:grid-cols-4">
           {jerseys.map(jersey => (
             <ProductCard key={jersey._id} jersey={jersey} />

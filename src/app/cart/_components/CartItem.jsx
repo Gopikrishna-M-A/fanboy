@@ -6,9 +6,35 @@ import { Separator } from "@/components/ui/separator"
 import { useCart } from "@/contexts/cart"
 
 const CartItem = ({ cartItem, index }) => {
+  const [quantity, setQuantity] = useState(cartItem.quantity)
+
+  const { addToCart, removeFromCart, updateCart } = useCart()
+  const [debounceTimeout, setDebounceTimeout] = useState(null)
 
 
-  const { addToCart, removeFromCart } = useCart()
+  const handleCartUpdate = (key) => {
+    if (debounceTimeout) {
+      clearTimeout(debounceTimeout);
+    }
+
+    let newQuantity = quantity
+    if(key == 'add'){
+      newQuantity += 1
+      setQuantity((prev)=>prev + 1)
+    }else if (key == 'sub'){
+      newQuantity  = Math.max(1, newQuantity - 1)
+      setQuantity((prev)=>Math.max(1, prev - 1))
+    }
+
+
+    const timeout = setTimeout(async () => {
+      console.log("function call");
+      updateCart(cartItem.jersey._id, newQuantity, cartItem.size)
+    }, 300);
+
+    setDebounceTimeout(timeout);
+   
+  }
 
 
   return (
@@ -38,27 +64,16 @@ const CartItem = ({ cartItem, index }) => {
         <Trash onClick={()=>removeFromCart(cartItem.jersey._id,cartItem.size)}/>
           <div className='bg-gray-100 w-24 h-9 rounded-full p-1 flex items-center justify-between'>
             <button
-              disabled={cartItem.quantity > 1 ? false: true}
-              onClick={() => {
-                if (cartItem.quantity > 1) {
-                  addToCart(
-                    cartItem.jersey._id,
-                    - 1,
-                    cartItem.size
-                  )
-                }
+              onClick={()=>{
+                handleCartUpdate('sub')
               }}
               className='w-7 h-7 bg-white rounded-full flex items-center justify-center'>
               -
             </button>
-            <div>{cartItem.quantity}</div>
+            <div>{quantity}</div>
             <button
-              onClick={() => {
-                addToCart(
-                  cartItem.jersey._id,
-                  1,
-                  cartItem.size
-                )
+              onClick={()=>{
+                handleCartUpdate('add')
               }}
               className='w-7 h-7 bg-white rounded-full flex items-center justify-center'>
               +

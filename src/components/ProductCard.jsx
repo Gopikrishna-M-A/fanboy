@@ -16,7 +16,7 @@ const ProductCard = ({ jersey }) => {
       </div>
       <div className="p-4">
         <h3 className="font-semibold text-lg mb-1 truncate">{jersey?.name}</h3>
-        <p className="text-sm text-gray-600 mb-2 line-clamp-2">{jersey?.description}</p>
+        {/* <p className="text-sm text-gray-600 mb-2 line-clamp-2">{jersey?.description}</p> */}
         <div className="flex justify-between items-center">
           <span className="text-sm font-medium text-gray-500">{jersey?.category}</span>
           {/* {jersey?.price && (

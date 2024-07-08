@@ -68,6 +68,25 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  const updateCart = async (jerseyId, quantity, size) => {
+    setIsLoading(true);
+    try {
+      const response = await axios.put(`/api/carts`, {
+        jerseyId,
+        quantity,
+        size
+      });
+
+      // Update the cart with the server response
+      setCart(response.data);
+      updateTotals(response.data);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const removeFromCart = async (jerseyId,size) => {
     // Optimistically update the cart
     // setCart(prevCart => {
@@ -113,7 +132,8 @@ export const CartProvider = ({ children }) => {
       isLoading, 
       error, 
       cartTotalPrice, 
-      cartTotalQuantity 
+      cartTotalQuantity,
+      updateCart
     }}>
       {children}
     </CartContext.Provider>

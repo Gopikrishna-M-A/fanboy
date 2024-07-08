@@ -19,7 +19,6 @@ export async function getCartByUserId(userId) {
 }
 
 export async function upsertCartItem(userId, jerseyId, quantity, size) {
-  console.log("size services",size);
   await dbConnect();
 
   let cart = await Cart.findOne({ customer: userId });
@@ -71,4 +70,35 @@ export async function clearCart(userId) {
   const result = await Cart.findOneAndDelete({ customer: userId });
 
   return result ? JSON.parse(JSON.stringify(result)) : null;
+}
+
+
+
+export async function updateCart(userId, jerseyId, quantity, size) {
+  await dbConnect();
+
+  let cart = await Cart.findOne({ customer: userId });
+
+  if (!cart) {
+    cart = new Cart({ customer: userId, items: [] });
+  }
+
+  const jersey = await Jersey.findById(jerseyId);
+
+  if (!jersey) {
+    throw new Error('Jersey not found');
+  }
+
+  const existingItemIndex = cart.items.findIndex(
+    item => item.jersey.toString() === jerseyId && item.size === size
+  );
+
+  if (existingItemIndex !== -1) {
+    cart.items[existingItemIndex].quantity = quantity;
+  } else {
+    cart.items.push({ jersey: jerseyId, quantity, size });
+  }
+
+  await cart.save();
+  return getCartByUserId(userId);
 }

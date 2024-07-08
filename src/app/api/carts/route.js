@@ -5,6 +5,7 @@ import {
   getCartByUserId,
   upsertCartItem,
   removeFromCart,
+  updateCart,
   clearCart
 } from '@/services/cartService'
 
@@ -60,5 +61,24 @@ export async function DELETE(request) {
   } catch (error) {
     console.error("Failed to remove from cart:", error)
     return NextResponse.json({ error: "Failed to remove from cart" }, { status: 500 })
+  }
+}
+
+
+
+export async function PUT(request) {
+  const session = await getServerSession(authOptions)
+  if (!session) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  const { jerseyId, quantity, size } = await request.json()
+
+  try {
+    const cart = await updateCart(session.user.id, jerseyId, quantity, size)
+    return NextResponse.json(cart)
+  } catch (error) {
+    console.error("Failed to add/update item in cart:", error)
+    return NextResponse.json({ error: "Failed to add/update item in cart" }, { status: 500 })
   }
 }

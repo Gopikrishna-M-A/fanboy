@@ -20,7 +20,7 @@ const Cart = ({ setCurrent }) => {
 
   return (
     <div>
-      <Card className='mb-4'>
+      <Card className='mb-4 max-w-md mx-auto'>
         <CardHeader>
           <CardTitle className='text-xl font-bold flex items-center gap-1'>
               <ShoppingCart className='mr-2' />

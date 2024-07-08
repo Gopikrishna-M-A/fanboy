@@ -23,7 +23,7 @@ const formatTime = (dateString) => {
 const OrderItem = ({ order }) => {
   const lastStatus = order.orderStatus[order.orderStatus.length - 1]
   return (
-    <Card className='mb-4'>
+    <Card className='mb-4 max-w-md'>
       <CardContent className='pt-6'>
         <div className='flex justify-between items-center mb-2'>
           <span className='font-semibold'>#{order.orderNumber}</span>
