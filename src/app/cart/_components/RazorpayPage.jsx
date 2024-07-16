@@ -80,6 +80,9 @@ const RazorpayPage = ({ setCurrent }) => {
             shippingAddress: user.address,
           }).then(res => {
             if(res.status === 200){
+              setPaymentSuccess(true);
+              emptyCart()
+
               axios.post('/api/mail', {
                 jerseys:cart.items,
                 orderId:res.data.order.orderNumber,
@@ -88,12 +91,7 @@ const RazorpayPage = ({ setCurrent }) => {
               }).then((res)=>{
                 console.log("mail",res.data);
               }).catch((err)=>console.log("mail",err))
-              setPaymentSuccess(true);
-              emptyCart()
-              // window.location.reload(true);
-              // setTimeout(() => {
-              //   window.location.reload(true);
-              // }, 5000);
+             
             }
           })
 
