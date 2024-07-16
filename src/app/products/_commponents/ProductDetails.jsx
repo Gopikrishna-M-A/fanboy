@@ -401,9 +401,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { useCart } from "@/contexts/cart"
 import Image from "next/image"
+import { signIn, useSession } from "next-auth/react"
 
 const ProductDetails = ({ jerseyData }) => {
   // console.log("jerseyData",jerseyData);
+  const {data:session} = useSession()
+  const user = session?.user
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [selectedSize, setSelectedSize] = useState("")
   const [selectedVariant, setSelectedVariant] = useState(jerseyData.variant)
@@ -524,7 +527,13 @@ const ProductDetails = ({ jerseyData }) => {
               <Button
                 className='w-full'
                 size='lg'
-                onClick={() => addToCart(jersey._id, 1, selectedSize)}
+                onClick={() => {
+                  if(user){
+                    addToCart(jersey._id, 1, selectedSize)
+                  }else{
+                    signIn()
+                  }
+                }}
                 disabled={!selectedSize || jersey.stock < 1}>
                 <ShoppingCart  className='mr-2 h-4 w-4' /> Add to Cart
               </Button>
@@ -586,7 +595,7 @@ const ProductDetails = ({ jerseyData }) => {
                       <span className='text-sm font-medium text-gray-500'>
                         Added on
                       </span>
-                      <span className=''>{formatDate(jersey.createdAt)}</span>
+                      <span className=''>{formatDate(jersey.updatedAt)}</span>
                     </div>
                   </div>
                 </div>

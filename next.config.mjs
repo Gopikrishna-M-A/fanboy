@@ -5,7 +5,7 @@ const nextConfig = {
         remotePatterns: [
           {
             protocol: 'https',
-            hostname: 'ecomm-project-bucket.s3.amazonaws.com',
+            hostname: 'fanboy-jerseys.s3.amazonaws.com',
             port: '',
           },
         ],
