@@ -525,8 +525,8 @@ const ProductDetails = ({ jerseyData }) => {
                 className='w-full'
                 size='lg'
                 onClick={() => addToCart(jersey._id, 1, selectedSize)}
-                disabled={!selectedSize}>
-                <ShoppingCart className='mr-2 h-4 w-4' /> Add to Cart
+                disabled={!selectedSize || jersey.stock < 1}>
+                <ShoppingCart  className='mr-2 h-4 w-4' /> Add to Cart
               </Button>
             </CardContent>
           </Card>
