@@ -13,7 +13,6 @@ const RazorpayPage = ({ setCurrent }) => {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
 
 
-
   function transformArray(originalArray) {
     return originalArray.map(item => {
       return {
@@ -53,7 +52,7 @@ const RazorpayPage = ({ setCurrent }) => {
       alert("Razorpay SDK Failed to load");
       return;
     }
-    const amount = cartTotalPrice;
+    const amount = cartTotalPrice - (cart?.discountAmount || 0);
     const response = await axios.post(`/api/orders`, {
       amount,
     });
@@ -71,6 +70,9 @@ const RazorpayPage = ({ setCurrent }) => {
         try {
           const res  = axios.post(`/api/orders/verify`,{
             total: amount*100,
+            subTotal:cartTotalPrice,
+            discountAmount:cart?.discountAmount,
+            coupon:cart?.appliedCoupon,
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_order_id: response.razorpay_order_id,
             razorpay_signature: response.razorpay_signature,
@@ -79,7 +81,17 @@ const RazorpayPage = ({ setCurrent }) => {
           }).then(res => {
             if(res.status === 200){
               setPaymentSuccess(true);
-              emptyCart()
+              // emptyCart()
+            
+              axios.post('/api/mail', {
+                jerseys:cart.items,
+                orderId:res.data.order.orderNumber,
+                shippingAddress:res.data.order.shippingAddress,
+                amount:res.data.order.total
+              }).then((res)=>{
+                console.log("mail",res.data);
+              }).catch((err)=>console.log("mail",err))
+
               // window.location.reload(true);
               // setTimeout(() => {
               //   window.location.reload(true);

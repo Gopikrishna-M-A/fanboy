@@ -1,6 +1,8 @@
 import crypto from 'crypto';
 import razorpay from 'razorpay';
 import Order from './models/Order';
+import Jersey from './models/Jersey';
+import { finalizeCouponUsage } from './couponServices';
 
 
 
@@ -33,6 +35,9 @@ export async function getAllOrders() {
 export async function verifyOrder({
   razorpay_payment_id,
   razorpay_order_id,
+  discountAmount,
+  coupon,
+  subTotal,
   razorpay_signature,
   total,
   customer,
@@ -60,6 +65,9 @@ export async function verifyOrder({
       const newOrder = new Order({
         customer,
         jerseys,
+        discountAmount,
+        coupon,
+        subTotal,
         total: totalPrice,
         shippingAddress,
         paymentStatus: status === 'captured' ? 'Paid' : 'Pending',
@@ -74,6 +82,30 @@ export async function verifyOrder({
       console.log("new order",newOrder);
 
       const savedOrder = await newOrder.save();
+
+       // Update jersey quantities
+       for (const item of jerseys) {
+        const jersey = await Jersey.findById(item.jersey);
+        if (!jersey) {
+          throw new Error(`Jersey with id ${item.jersey} not found`);
+        }
+        jersey.stock -= item.quantity;
+        if (jersey.quantity < 0) {
+          throw new Error(`Insufficient quantity for jersey ${jersey.name}`);
+        }
+        await jersey.save();
+      }
+
+       // Finalize coupon usage if a coupon was used
+       if (coupon) {
+        try {
+          await finalizeCouponUsage(customer, coupon);
+        } catch (couponError) {
+          console.error('Error finalizing coupon usage:', couponError);
+          // Note: We're not throwing an error here to avoid rolling back the order
+          // You might want to log this for manual review
+        }
+      }
       return savedOrder;
     } else {
       // Invalid payment
@@ -148,6 +180,7 @@ export async function statusRemove(orderId) {
 
 export async function createOrder({ amount }) {
   console.log("amount",amount);
+
   try {
     const order = await razorpayClient.orders.create({
       amount: amount * 100, 

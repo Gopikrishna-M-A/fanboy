@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import Coupon from "./Coupon"
 
 const cartSchema = new mongoose.Schema({
   customer: {
@@ -23,6 +24,11 @@ const cartSchema = new mongoose.Schema({
       },
     },
   ],
+  appliedCoupon:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: Coupon,
+  },
+  discountAmount:Number
 })
 
 export default mongoose.models.Cart || mongoose.model("Cart", cartSchema)

@@ -45,15 +45,15 @@ const CartItem = ({ cartItem, index }) => {
           <Image
             width={70}
             height={70}
-            src={cartItem.jersey.images[0]}
+            src={cartItem?.jersey?.images && cartItem?.jersey?.images[0]}
           />
         </div>
         <div className='flex-grow '>
           <div level={4}>{cartItem.jersey.name}</div>
-          <p className='text-gray-300 uppercase'>{cartItem.jersey.variant}</p>
-          <p className='text-gray-300 '>Size {cartItem.size}</p>
+          <p className='text-gray-300 uppercase'>{cartItem?.jersey?.variant}</p>
+          <p className='text-gray-300 '>Size {cartItem?.size}</p>
           <div className='text-right w-full'>
-            <div level={5}>₹{cartItem.jersey.price.toFixed(2)}</div>
+            <div level={5}>₹{cartItem?.jersey?.price?.toFixed(2)}</div>
           </div>
         </div>
       </div>
