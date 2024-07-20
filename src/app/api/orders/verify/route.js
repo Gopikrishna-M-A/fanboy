@@ -15,7 +15,7 @@ export async function POST(request) {
 
   try {
     const orderData = await request.json()
-    console.log("verify route data",orderData);
+    // console.log("verify route data",orderData);
     const verifiedOrder = await verifyOrder({...orderData,customer:session.user.id})
     return NextResponse.json({ order: verifiedOrder })
   } catch (error) {

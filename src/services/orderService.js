@@ -4,7 +4,17 @@ import Order from './models/Order';
 import Jersey from './models/Jersey';
 import { finalizeCouponUsage } from './couponServices';
 
+function checkAmountWithTax(amountInPaise, totalInPaise) {
+  // Convert paise to rupees
+  let amountInRupees = amountInPaise / 100;
+  let totalInRupees = totalInPaise / 100;
 
+  // Calculate the pre-tax amount by removing the 2% service tax
+  let preTaxAmount = amountInRupees / 1.02;
+
+  // Compare the pre-tax amount with the total
+  return preTaxAmount.toFixed(2) === totalInRupees.toFixed(2);
+}
 
 function generateOrderNumber() {
   // Generate the random color string using crypto for enhanced randomness
@@ -48,11 +58,12 @@ export async function verifyOrder({
     // Fetch payment details from Razorpay
     const payment = await razorpayClient.payments.fetch(razorpay_payment_id);
     const { status, amount, currency, order_id, method } = payment;
+    console.log("new status",status, amount, currency, order_id, method);
 
     // Verify payment details
     const isValidPayment = (
       status === 'captured' &&
-      amount === total &&
+      checkAmountWithTax(amount,total) &&
       currency === 'INR' &&
       order_id === razorpay_order_id
     );
