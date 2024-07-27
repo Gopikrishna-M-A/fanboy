@@ -5,7 +5,7 @@ import Image from 'next/image'
 const ProductCard = ({ jersey }) => {
   return (
     <Link prefetch href={`/products/${jersey?._id}`} className="block w-full sm:w-64 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 rounded-lg overflow-hidden">
-      <div className="aspect-w-1 aspect-h-1 w-full relative">
+      <div className="aspect-w-1 aspect-h-1 w-full relative h-96 md:h-60">
         <Image 
           src={jersey?.images[0]} 
           width={200}

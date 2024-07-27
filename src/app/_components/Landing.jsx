@@ -18,7 +18,7 @@ const Landing = ({ teams, jerseys, clubs, international }) => {
       path:'club'
     },
     {
-      imageUrl: "/images/banner/cat.jpg",
+      imageUrl: "/images/international.png",
       title: "International",
       subtitle: "Explore national team jerseys",
       path:'international'
@@ -34,15 +34,15 @@ const Landing = ({ teams, jerseys, clubs, international }) => {
   }, [jerseys.length])
 
   return (
-    <div className='pb-20'>
+    <div className='pb-20 bg-gray-100'>
       {/* Banner Section */}
       <div className='relative h-52 md:h-96 bg-gray-300'>
         <Image
           layout='fill'
-          src='/images/banner/bg.webp'
+          src='/images/bg.jpg'
           alt='Banner'
-          className='object-cover'
-        />
+          className='object-cover object-[center_60%]'
+          />
         <div className='absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center'>
           <Link prefetch href='/products'>
             <Button variant='secondary'>SHOP NOW</Button>
@@ -96,28 +96,9 @@ const Landing = ({ teams, jerseys, clubs, international }) => {
         </div>
       </div>
 
-      {/* International Section */}
-      {/* <div className='mt-8 px-4'>
-        <Link
-          prefetch
-          href='/products/category/international'
-          className='block relative h-40 rounded-lg overflow-hidden'>
-          <Image
-            layout='fill'
-            src='/images/banner/cat.jpg'
-            alt='International Jerseys'
-            className='object-cover'
-          />
-          <div className='absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center'>
-            <span className='text-white text-4xl font-bold uppercase'>
-              International
-            </span>
-          </div>
-        </Link>
-      </div> */}
 
     
-      <div className='mt-6 md:hidden'>
+      <div className='mt-6 md:mx-auto md:max-w-screen-xl md:px-4 md:pb-6 md:pt-16  lg:pt-10 '>
       <h2 className='text-xl px-4 font-semibold mb-3'>Shop by Category</h2>
       <JerseyCardGrid cards={cardsData} />
       </div>
