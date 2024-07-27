@@ -626,58 +626,40 @@ const ProductDetails = ({ jerseyData }) => {
                   <TableRow>
                     <TableHead>Size</TableHead>
                     <TableHead>Width (inches)</TableHead>
-                    <TableHead>Width (cm)</TableHead>
                     <TableHead>Length (inches)</TableHead>
-                    <TableHead>Length (cm)</TableHead>
                     <TableHead>Sleeve (inches)</TableHead>
-                    <TableHead>Sleeve (cm)</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                 <TableRow>
                     <TableCell>S</TableCell>
                     <TableCell>38</TableCell>
-                    <TableCell>97</TableCell>
                     <TableCell>26</TableCell>
-                    <TableCell>68</TableCell>
                     <TableCell>8</TableCell>
-                    <TableCell>20</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>M</TableCell>
                     <TableCell>40</TableCell>
-                    <TableCell>102</TableCell>
                     <TableCell>27</TableCell>
-                    <TableCell>69</TableCell>
                     <TableCell>8</TableCell>
-                    <TableCell>21</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>L</TableCell>
                     <TableCell>42</TableCell>
-                    <TableCell>107</TableCell>
                     <TableCell>28</TableCell>
-                    <TableCell>71</TableCell>
                     <TableCell>9</TableCell>
-                    <TableCell>22</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>XL</TableCell>
                     <TableCell>44</TableCell>
-                    <TableCell>112</TableCell>
                     <TableCell>28</TableCell>
-                    <TableCell>72</TableCell>
                     <TableCell>9</TableCell>
-                    <TableCell>23</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>XXL</TableCell>
                     <TableCell>46</TableCell>
-                    <TableCell>117</TableCell>
                     <TableCell>29</TableCell>
-                    <TableCell>73</TableCell>
                     <TableCell>10</TableCell>
-                    <TableCell>25</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
@@ -685,70 +667,52 @@ const ProductDetails = ({ jerseyData }) => {
           </Card>
           
           <Card>
-            <CardHeader>PLAYER VERSION</CardHeader>
-            <CardContent className='p-4'>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Size</TableHead>
-                    <TableHead>Width (inches)</TableHead>
-                    <TableHead>Width (cm)</TableHead>
-                    <TableHead>Length (inches)</TableHead>
-                    <TableHead>Length (cm)</TableHead>
-                    <TableHead>Sleeve (inches)</TableHead>
-                    <TableHead>Sleeve (cm)</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>S</TableCell>
-                    <TableCell>38</TableCell>
-                    <TableCell>97</TableCell>
-                    <TableCell>26</TableCell>
-                    <TableCell>68</TableCell>
-                    <TableCell>8</TableCell>
-                    <TableCell>20</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>M</TableCell>
-                    <TableCell>40</TableCell>
-                    <TableCell>102</TableCell>
-                    <TableCell>27</TableCell>
-                    <TableCell>69</TableCell>
-                    <TableCell>8</TableCell>
-                    <TableCell>21</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>L</TableCell>
-                    <TableCell>42</TableCell>
-                    <TableCell>107</TableCell>
-                    <TableCell>28</TableCell>
-                    <TableCell>71</TableCell>
-                    <TableCell>9</TableCell>
-                    <TableCell>22</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>XL</TableCell>
-                    <TableCell>44</TableCell>
-                    <TableCell>112</TableCell>
-                    <TableCell>28</TableCell>
-                    <TableCell>72</TableCell>
-                    <TableCell>9</TableCell>
-                    <TableCell>23</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>XXL</TableCell>
-                    <TableCell>46</TableCell>
-                    <TableCell>117</TableCell>
-                    <TableCell>29</TableCell>
-                    <TableCell>73</TableCell>
-                    <TableCell>10</TableCell>
-                    <TableCell>25</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+      <CardHeader>PLAYERS QUALITY VERSION</CardHeader>
+      <CardContent className='p-4'>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Size</TableHead>
+              <TableHead>Chest (inches)</TableHead>
+              <TableHead>Length (inches)</TableHead>
+              <TableHead>Shoulder (inches)</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow>
+              <TableCell>S</TableCell>
+              <TableCell>35-36</TableCell>
+              <TableCell>25-26</TableCell>
+              <TableCell>15.5 - 16</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>M</TableCell>
+              <TableCell>37-38</TableCell>
+              <TableCell>26-27</TableCell>
+              <TableCell>16 - 16.5</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>L</TableCell>
+              <TableCell>39-40</TableCell>
+              <TableCell>27-28</TableCell>
+              <TableCell>16.5 - 17</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>XL</TableCell>
+              <TableCell>41-42</TableCell>
+              <TableCell>28-29</TableCell>
+              <TableCell>17 - 17.5</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>XXL</TableCell>
+              <TableCell>43-44</TableCell>
+              <TableCell>29-30</TableCell>
+              <TableCell>17.5 - 18</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
         </TabsContent>
         {/* <TabsContent value='reviews' className='mt-4'>
           <Card>
