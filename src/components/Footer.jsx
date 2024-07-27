@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 import { useCart } from "@/contexts/cart"
 import { FaWhatsapp, FaInstagram } from "react-icons/fa"
+import Image from "next/image"
 const NavItem = ({ id, Icon, label, path, isActive, onClick }) => {
   const { cart } = useCart()
   return (
@@ -115,7 +116,12 @@ const Footer = () => {
             <div>
               <div className='flex justify-center font-bold text-4xl text-green-500 sm:justify-start'>
                 {/* logo */}
-                FanBoy Jeyseys
+                <Image
+            src='/images/logo-text.png'
+            width='200'
+            height='100'
+            alt='logo text'
+           />
               </div>
 
               <p className='mt-6 max-w-md text-center leading-relaxed text-gray-500 sm:max-w-xs sm:text-left'>
