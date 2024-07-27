@@ -24,7 +24,7 @@ const Header = () => {
             </Avatar>
             {/* <div className='text-2xl font-bold'>Fanboy Jerseys</div> */}
            <Image
-            src='/images/logo-text.png'
+            src='/images/text.png'
             width='130'
             height='100'
             alt='logo text'

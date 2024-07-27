@@ -117,7 +117,7 @@ const Footer = () => {
               <div className='flex justify-center font-bold text-4xl text-green-500 sm:justify-start'>
                 {/* logo */}
                 <Image
-            src='/images/logo-text.png'
+            src='/images/text.png'
             width='200'
             height='100'
             alt='logo text'
