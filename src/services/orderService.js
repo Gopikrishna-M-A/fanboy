@@ -63,7 +63,8 @@ export async function verifyOrder({
     // Verify payment details
     const isValidPayment = (
       status === 'captured' &&
-      checkAmountWithTax(amount,total) &&
+      // checkAmountWithTax(amount,total) &&
+      amount===total &&
       currency === 'INR' &&
       order_id === razorpay_order_id
     );
