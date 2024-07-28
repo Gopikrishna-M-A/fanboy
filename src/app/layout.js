@@ -33,19 +33,13 @@ export const metadata = {
   },
   icons: {
     icon: [
-      { url: "/icons/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      { url: "/icons/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-    ],
-    apple: [
-      { url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-    ],
-    other: [
-      { rel: "mask-icon", url: "/icons/safari-pinned-tab.svg", color: "#ff0000" },
+      { url: "/icons/favicon-128.png", sizes: "32x32", type: "image/png" },
+      { url: "/icons/favicon-128.png", sizes: "16x16", type: "image/png" },
     ],
   },
-  themeColor: "#ff0000",
+  themeColor: "#16a34a",
   other: {
-    "msapplication-TileColor": "#00a300",
+    "msapplication-TileColor": "#16a34a",
   },
 }
 
