@@ -88,6 +88,7 @@ const Cart = ({ setCurrent }) => {
   const [couponCode, setCouponCode] = useState('')
   const [couponLoading,setCouponLoading] = useState(false)
   // const [couponError, setCouponError] = useState('')
+  const hasOutOfStockItems = cart?.items?.some(item => item.jersey.stock === 0)
 
 
   useEffect(()=>{
@@ -120,6 +121,7 @@ const Cart = ({ setCurrent }) => {
 
   return (
     <div>
+    
       <Card className='mb-4 max-w-md mx-auto'>
         <CardHeader>
           <CardTitle className='text-xl font-bold flex items-center gap-1'>
@@ -128,7 +130,15 @@ const Cart = ({ setCurrent }) => {
               <span className='text-sm text-gray-400'>
               ({cart?.items?.length || 0})
             </span>
+            
           </CardTitle>
+          {hasOutOfStockItems && (
+        <Alert variant="destructive" className="mt-2 max-w-md mx-auto">
+          <AlertDescription>
+            Some items in your cart are out of stock. Please remove them to proceed with checkout.
+          </AlertDescription>
+        </Alert>
+      )}
         </CardHeader>
         <CardContent>
           {cart?.items?.map((cartItem, index) => (
@@ -184,11 +194,12 @@ const Cart = ({ setCurrent }) => {
           <div className='text-lg font-bold'>
             Total: ₹{(cartTotalPrice - (cart?.discountAmount || 0)).toFixed(2)}
           </div>
-          <Button onClick={() => setCurrent(1)}>
-            Checkout
+          <Button onClick={() => setCurrent(1)} disabled={hasOutOfStockItems}>
+          {hasOutOfStockItems ? 'Items Out of Stock' : 'Checkout'}
           </Button>
         </CardFooter>
       </Card>
+     
       <div className='flex justify-end items-end w-full'>
         <Link href={"mailto:fanboysale@gmail.com"}>
           <Button className='py-1 px-4 text-sm' variant='outline'>

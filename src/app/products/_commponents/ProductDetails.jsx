@@ -429,7 +429,6 @@ const ProductDetails = ({ jerseyData }) => {
 
   const handleVariantChange = (variant) => {
     setSelectedVariant(variant)
-    setSelectedSize("") // Reset size when changing variant
     setCartButtonClicked(false)
   }
 
@@ -537,8 +536,10 @@ const ProductDetails = ({ jerseyData }) => {
                   </div>
                 </div>
               </div>
-
-              {isLoading ? (
+ 
+              {jersey?.stock === 0 ?  <Button className='w-full' variant='destructive'>
+                  Out Of Stock
+                </Button> : isLoading ? (
                 <Button className='w-full' disabled>
                   <Loader2 className='mr-2 h-4 w-4 animate-spin' />
                   Please wait
@@ -556,6 +557,8 @@ const ProductDetails = ({ jerseyData }) => {
                   {cartButtonClicked ? "Go to cart" : "Add to Cart"}
                 </Button>
               )}
+
+              {}
             </CardContent>
           </Card>
 

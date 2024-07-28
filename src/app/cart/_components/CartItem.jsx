@@ -10,7 +10,7 @@ const CartItem = ({ cartItem, index }) => {
 
   const { addToCart, removeFromCart, updateCart } = useCart()
   const [debounceTimeout, setDebounceTimeout] = useState(null)
-
+  const isOutOfStock = cartItem.jersey.stock === 0;
 
   const handleCartUpdate = (key) => {
     if (debounceTimeout) {
@@ -39,14 +39,21 @@ const CartItem = ({ cartItem, index }) => {
 
   return (
     <div
-      className={`flex flex-col justify-between px-2 py-2 gap-3`}>
-      <div className='flex gap-3'>
-        <div className='min-w-24 min-h-24 w-24 h-24 flex justify-center items-center p-1 overflow-hidden'>
+      className={`flex flex-col justify-between px-2 py-2 gap-3 `}>
+      <div className='flex gap-3 '>
+        <div className='min-w-24 min-h-24 w-24 h-24 flex justify-center items-center p-1 overflow-hidden relative'>
           <Image
             width={70}
             height={70}
             src={cartItem?.jersey?.images && cartItem?.jersey?.images[0]}
           />
+           {isOutOfStock && (
+            <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
+              <span className="text-white font-bold text-xs text-center px-1 py-0.5 rounded uppercase">
+                Out of <br/> Stock
+              </span>
+            </div>
+          )}
         </div>
         <div className='flex-grow '>
           <div level={4}>{cartItem.jersey.name}</div>
@@ -67,6 +74,7 @@ const CartItem = ({ cartItem, index }) => {
               onClick={()=>{
                 handleCartUpdate('sub')
               }}
+              disabled={isOutOfStock}
               className='w-7 h-7 bg-white rounded-full flex items-center justify-center'>
               -
             </button>
@@ -75,6 +83,7 @@ const CartItem = ({ cartItem, index }) => {
               onClick={()=>{
                 handleCartUpdate('add')
               }}
+              disabled={isOutOfStock}
               className='w-7 h-7 bg-white rounded-full flex items-center justify-center'>
               +
             </button>
