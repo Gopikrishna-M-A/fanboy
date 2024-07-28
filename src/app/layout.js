@@ -37,6 +37,7 @@ export const metadata = {
       { url: "/icons/logo-16.png", sizes: "16x16", type: "image/png" },
     ],
   },
+  themeColor: "#22c55e",
   other: {
     "msapplication-TileColor": "#22c55e",
   },
