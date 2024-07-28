@@ -76,7 +76,7 @@ const Landing = ({ teams, jerseys, clubs, international }) => {
 
       {/* Shop by Category Section */}
       <div className='mt-6 md:mx-auto max-w-screen-xl md:px-4 md:pb-6 md:pt-16 lg:px-8 lg:pt-10'>
-        <h2 className='text-xl pl-4 px-4 font-semibold mb-3'>Shop by Team</h2>
+        <h2 className='hidden md:block text-xl pl-4 px-4 font-semibold mb-3'>Shop by Team</h2>
         <div className='flex overflow-x-auto pb-2 hide-scrollbar md:grid md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 md:gap-3'>
           {teams.map((team, index) => (
             <div key={index} className='flex-shrink-0 mr-3 pl-4'>
@@ -99,24 +99,39 @@ const Landing = ({ teams, jerseys, clubs, international }) => {
 
     
       <div className='mt-6 md:mx-auto md:max-w-screen-xl md:px-4 md:pb-6 md:pt-16  lg:pt-10 '>
-      <h2 className='text-xl px-4 font-semibold mb-3'>Shop by Category</h2>
+      <h2 className='hidden md:block text-xl px-4 font-semibold mb-3 '>Shop by Category</h2>
       <JerseyCardGrid cards={cardsData} />
       </div>
 
       <div className='hidden md:block md:mx-auto max-w-screen-xl md:px-4 md:pb-6 md:pt-16 lg:px-8 lg:pt-10'>
       <h2 className='text-xl font-semibold mb-3'>Clubs</h2>
-      <div className="flex gap-5 flex-wrap">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {clubs.map((jersey)=>(
          <ProductCard jersey={jersey}/>
         ))}
       </div>
       <h2 className='text-xl mt-4 font-semibold mb-3'>International</h2>
-      <div className="flex gap-5 flex-wrap">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {international.map((jersey)=>(
          <ProductCard jersey={jersey}/>
         ))}
       </div>
       </div>
+
+      <div className='px-4 md:mx-auto max-w-screen-xl md:px-4 md:pb-6 md:pt-16 lg:px-8 lg:pt-10'>
+
+      <h2 className='hidden md:block text-xl mt-4 font-semibold mb-3'>All</h2>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        {jerseys.map((jersey)=>(
+         <ProductCard jersey={jersey}/>
+        ))}
+      </div>
+
+      </div>
+
+      <div className="py-10 w-full"/>
+
+     
 
       {/* Footer Section */}
       <footer className='bg-white md:hidden'>

@@ -66,7 +66,7 @@
 
 'use client'
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
@@ -77,7 +77,7 @@ import {
 import CartItem from "./CartItem"
 import PriceDetails from "./PriceDetails"
 import { useCart } from "@/contexts/cart"
-import { CircleHelp, ShoppingCart, Tag } from "lucide-react"
+import { CircleHelp, Loader2, ShoppingCart, Tag } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
@@ -86,15 +86,26 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 const Cart = ({ setCurrent }) => {
   const { cart, cartTotalPrice, applyCoupon, removeCoupon, error } = useCart()
   const [couponCode, setCouponCode] = useState('')
+  const [couponLoading,setCouponLoading] = useState(false)
   // const [couponError, setCouponError] = useState('')
+
+
+  useEffect(()=>{
+    if(cart?.appliedCoupon){
+      removeCoupon()
+    }
+  },[cartTotalPrice])
 
   const handleApplyCoupon = async () => {
     try {
+      setCouponLoading(true)
       await applyCoupon(couponCode)
       setCouponCode('')
       // setCouponError('')
     } catch (error) {
       // setCouponError(error.message)
+    }finally{
+      setCouponLoading(false)
     }
   }
 
@@ -137,9 +148,13 @@ const Cart = ({ setCurrent }) => {
                 value={couponCode}
                 onChange={(e) => setCouponCode(e.target.value)}
               />
-              <Button onClick={handleApplyCoupon} disabled={!couponCode}>
+              {couponLoading ?<Button disabled>
+      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+     Applying
+    </Button> :<Button onClick={handleApplyCoupon} disabled={!couponCode}>
                 Apply
-              </Button>
+              </Button>}
+              
             </div>
             {error && (
               <Alert variant="destructive" className="mt-2">

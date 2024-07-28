@@ -146,7 +146,6 @@
 //             <ShoppingCart className='mr-2 h-4 w-4' /> Add to Cart
 //           </Button>
 
-
 //           </div>
 //         </CardContent>
 //       </Card>
@@ -369,12 +368,6 @@
 
 // export default ProductDetails
 
-
-
-
-
-
-
 "use client"
 import React, { useState } from "react"
 import {
@@ -386,6 +379,7 @@ import {
   Flag,
   Package,
   Calendar,
+  Loader2,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
@@ -401,16 +395,19 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { useCart } from "@/contexts/cart"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import { signIn, useSession } from "next-auth/react"
 
 const ProductDetails = ({ jerseyData }) => {
   // console.log("jerseyData",jerseyData);
-  const {data:session} = useSession()
+  const router = useRouter()
+  const { data: session } = useSession()
   const user = session?.user
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  const [selectedSize, setSelectedSize] = useState("")
+  const [selectedSize, setSelectedSize] = useState("S")
   const [selectedVariant, setSelectedVariant] = useState(jerseyData.variant)
-  const { addToCart } = useCart()
+  const { addToCart, isLoading } = useCart()
+  const [cartButtonClicked, setCartButtonClicked] = useState(false)
 
   const jersey = jerseyData.variants[selectedVariant] || jerseyData
 
@@ -433,6 +430,20 @@ const ProductDetails = ({ jerseyData }) => {
   const handleVariantChange = (variant) => {
     setSelectedVariant(variant)
     setSelectedSize("") // Reset size when changing variant
+    setCartButtonClicked(false)
+  }
+
+  const handleAddToCart = () => {
+    if (user) {
+      if (cartButtonClicked) {
+        router.push("/cart")
+      } else {
+        addToCart(jersey._id, 1, selectedSize)
+        setCartButtonClicked(true)
+      }
+    } else {
+      signIn()
+    }
   }
 
   return (
@@ -441,12 +452,12 @@ const ProductDetails = ({ jerseyData }) => {
         <Card className='lg:sticky lg:top-4'>
           <CardContent className='p-6'>
             <div className='relative aspect-square mb-4'>
-              <div className='aspect-w-1 aspect-h-1 w-full relative'>
+              <div className='aspect-w-1 aspect-h-1 h-full w-full relative'>
                 <Image
                   src={jersey.images[currentImageIndex]}
                   width={400}
                   height={400}
-                  className='w-full h-full object-cover'
+                  className='w-full h-full object-contain object-center'
                   alt={jersey?.name}
                 />
               </div>
@@ -482,8 +493,8 @@ const ProductDetails = ({ jerseyData }) => {
                   </span>
                 </div>
                 <span className='bg-green-100 text-green-800 text-sm font-medium px-2.5 py-0.5 rounded'>
-                  {Math.round(((jersey.mrp - jersey.price) / jersey.mrp) * 100)}%
-                  OFF
+                  {Math.round(((jersey.mrp - jersey.price) / jersey.mrp) * 100)}
+                  % OFF
                 </span>
               </div>
 
@@ -497,7 +508,10 @@ const ProductDetails = ({ jerseyData }) => {
                       <Button
                         key={size}
                         variant={selectedSize === size ? "default" : "outline"}
-                        onClick={() => setSelectedSize(size)}>
+                        onClick={() => {
+                          setSelectedSize(size)
+                          setCartButtonClicked(false)
+                          }}>
                         {size}
                       </Button>
                     ))}
@@ -524,19 +538,24 @@ const ProductDetails = ({ jerseyData }) => {
                 </div>
               </div>
 
-              <Button
-                className='w-full'
-                size='lg'
-                onClick={() => {
-                  if(user){
-                    addToCart(jersey._id, 1, selectedSize)
-                  }else{
-                    signIn()
-                  }
-                }}
-                disabled={!selectedSize || jersey.stock < 1}>
-                <ShoppingCart  className='mr-2 h-4 w-4' /> Add to Cart
-              </Button>
+              {isLoading ? (
+                <Button className='w-full' disabled>
+                  <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                  Please wait
+                </Button>
+              ) : (
+                <Button
+                  className={`w-full ${
+                    cartButtonClicked &&
+                    "bg-green-400 hover:bg-green-500 focus:bg-green-600"
+                  }`}
+                  size='lg'
+                  onClick={handleAddToCart}
+                  disabled={!selectedSize || jersey.stock < 1}>
+                  <ShoppingCart className='mr-2 h-4 w-4' />{" "}
+                  {cartButtonClicked ? "Go to cart" : "Add to Cart"}
+                </Button>
+              )}
             </CardContent>
           </Card>
 
@@ -631,7 +650,7 @@ const ProductDetails = ({ jerseyData }) => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                <TableRow>
+                  <TableRow>
                     <TableCell>S</TableCell>
                     <TableCell>38</TableCell>
                     <TableCell>26</TableCell>
@@ -665,54 +684,54 @@ const ProductDetails = ({ jerseyData }) => {
               </Table>
             </CardContent>
           </Card>
-          
+
           <Card>
-      <CardHeader>PLAYERS QUALITY VERSION</CardHeader>
-      <CardContent className='p-4'>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Size</TableHead>
-              <TableHead>Chest (inches)</TableHead>
-              <TableHead>Length (inches)</TableHead>
-              <TableHead>Shoulder (inches)</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow>
-              <TableCell>S</TableCell>
-              <TableCell>35-36</TableCell>
-              <TableCell>25-26</TableCell>
-              <TableCell>15.5 - 16</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>M</TableCell>
-              <TableCell>37-38</TableCell>
-              <TableCell>26-27</TableCell>
-              <TableCell>16 - 16.5</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>L</TableCell>
-              <TableCell>39-40</TableCell>
-              <TableCell>27-28</TableCell>
-              <TableCell>16.5 - 17</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>XL</TableCell>
-              <TableCell>41-42</TableCell>
-              <TableCell>28-29</TableCell>
-              <TableCell>17 - 17.5</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>XXL</TableCell>
-              <TableCell>43-44</TableCell>
-              <TableCell>29-30</TableCell>
-              <TableCell>17.5 - 18</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </CardContent>
-    </Card>
+            <CardHeader>PLAYERS QUALITY VERSION</CardHeader>
+            <CardContent className='p-4'>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Size</TableHead>
+                    <TableHead>Chest (inches)</TableHead>
+                    <TableHead>Length (inches)</TableHead>
+                    <TableHead>Shoulder (inches)</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>S</TableCell>
+                    <TableCell>35-36</TableCell>
+                    <TableCell>25-26</TableCell>
+                    <TableCell>15.5 - 16</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>M</TableCell>
+                    <TableCell>37-38</TableCell>
+                    <TableCell>26-27</TableCell>
+                    <TableCell>16 - 16.5</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>L</TableCell>
+                    <TableCell>39-40</TableCell>
+                    <TableCell>27-28</TableCell>
+                    <TableCell>16.5 - 17</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>XL</TableCell>
+                    <TableCell>41-42</TableCell>
+                    <TableCell>28-29</TableCell>
+                    <TableCell>17 - 17.5</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>XXL</TableCell>
+                    <TableCell>43-44</TableCell>
+                    <TableCell>29-30</TableCell>
+                    <TableCell>17.5 - 18</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
         </TabsContent>
         {/* <TabsContent value='reviews' className='mt-4'>
           <Card>
@@ -727,10 +746,3 @@ const ProductDetails = ({ jerseyData }) => {
 }
 
 export default ProductDetails
-
-
-
-
-
-
-

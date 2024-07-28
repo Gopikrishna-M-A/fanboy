@@ -61,7 +61,7 @@ const CartItem = ({ cartItem, index }) => {
       <div className='flex justify-end items-center'>
         {/* <Button className='py-1 px-4 text-sm' variant="outline" >Add to wishlist</Button> */}
         <div className='flex gap-5 items-center'>
-        <Trash onClick={()=>removeFromCart(cartItem.jersey._id,cartItem.size)}/>
+        <Trash className="cursor-pointer rounded-md shadow-sm w-6 h-6 hover:rotate-180 transition-all ease-in-out p-1" onClick={()=>removeFromCart(cartItem.jersey._id,cartItem.size)}/>
           <div className='bg-gray-100 w-24 h-9 rounded-full p-1 flex items-center justify-between'>
             <button
               onClick={()=>{
