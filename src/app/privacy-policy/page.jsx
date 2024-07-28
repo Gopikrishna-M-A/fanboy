@@ -1,6 +1,13 @@
 import React from 'react';
 import { Shield, Database, Clipboard, Lock, Share2 } from 'lucide-react';
 
+
+export const generateMetadata = async () => {
+  return {
+    title: 'Privacy Policy | Fanboy Jerseys',
+  }
+}
+
 const PrivacyPolicy = () => {
     const today = new Date();
     const currentYear = today.getFullYear();

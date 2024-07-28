@@ -1,6 +1,12 @@
 import React from 'react';
 import { Phone, Mail, MapPin, Globe } from 'lucide-react';
 
+export const generateMetadata = async () => {
+  return {
+    title: 'Support | Fanboy Jerseys',
+  }
+}
+
 const ContactDetails = () => {
   return (
     <div className="bg-gray-100 min-h-screen flex items-center justify-center">

@@ -1,6 +1,14 @@
 import React from 'react';
 import { Truck, Package, Clock, MapPin, AlertCircle } from 'lucide-react';
 
+export const generateMetadata = async ({ params }) => {
+  return {
+    title: `Shipping And Delivery | Fanboy Jerseys`,
+  }
+}
+
+
+
 const ShippingAndDeliveryPolicy = () => {
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8 my-10">

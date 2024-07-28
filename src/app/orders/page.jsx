@@ -2,6 +2,14 @@ import { getServerSession } from "next-auth";
 import OrdersListing from "./_components/OrdersListing";
 import { getOrderHistory } from '@/services/orderService'
 import { authOptions } from "../api/auth/[...nextauth]/options";
+
+
+export const generateMetadata = async () => {
+  return {
+    title: 'Orders | Fanboy Jerseys',
+  }
+}
+
 const Page = async () => {
   const session = await getServerSession(authOptions);
   const orderHistory = await getOrderHistory(session?.user?.id)

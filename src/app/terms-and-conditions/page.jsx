@@ -1,6 +1,14 @@
 import React from 'react';
 import { Info, Calendar, Shield, AlertTriangle, UserX } from 'lucide-react';
 
+
+export const generateMetadata = async ({ params }) => {
+  return {
+    title: `Terms And Conditions | Fanboy Jerseys`,
+  }
+}
+
+
 const TermsAndConditions = () => {
   const today = new Date();
   const currentYear = today.getFullYear();
