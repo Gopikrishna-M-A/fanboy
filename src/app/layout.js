@@ -38,7 +38,7 @@ export const metadata = {
     ],
   },
   other: {
-    "msapplication-TileColor": "#16a34a",
+    "msapplication-TileColor": "#22c55e",
   },
 }
 
