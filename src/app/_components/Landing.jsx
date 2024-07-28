@@ -75,11 +75,11 @@ const Landing = ({ teams, jerseys, clubs, international }) => {
       </div> */}
 
       {/* Shop by Category Section */}
-      <div className='mt-6 md:mx-auto max-w-screen-xl md:px-4 md:pb-6 md:pt-16 lg:px-8 lg:pt-10 hide-scrollbar'>
-        <h2 className='text-xl pl-4 px-4 hide-scrollbar font-semibold mb-3'>Shop by Team</h2>
+      <div className='mt-6 md:mx-auto max-w-screen-xl md:px-4 md:pb-6 md:pt-16 lg:px-8 lg:pt-10'>
+        <h2 className='text-xl pl-4 px-4 font-semibold mb-3'>Shop by Team</h2>
         <div className='flex overflow-x-auto pb-2 hide-scrollbar md:grid md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 md:gap-3'>
           {teams.map((team, index) => (
-            <div key={index} className='flex-shrink-0 mr-3 pl-4 hide-scrollbar'>
+            <div key={index} className='flex-shrink-0 mr-3 pl-4'>
               <Link
                 prefetch
                 href={`/products/team/${team._id}`}
