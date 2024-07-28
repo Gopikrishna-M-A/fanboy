@@ -31,13 +31,12 @@ export const metadata = {
   social: {
     instagram: 'https://www.instagram.com/fnbyjrsy',
   },
+  manifest: "/manifest.json",
   icons: {
     icon: [
-      { url: "/icons/favicon-128.png", sizes: "32x32", type: "image/png" },
-      { url: "/icons/favicon-128.png", sizes: "16x16", type: "image/png" },
+      { url: "/icons/favicon-16.png", sizes: "16x16", type: "image/png" },
     ],
   },
-  themeColor: "#16a34a",
   other: {
     "msapplication-TileColor": "#16a34a",
   },
