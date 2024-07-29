@@ -1,6 +1,10 @@
 {
-    "name": "Fanboy",
+    "name": "Fanboy Jerseys",
     "short_name": "Fanboy",
+    "developer": {
+            "name": "Gopikrishna",
+            "url": "https://www.linkedin.com/in/gopikrishna6003"
+    },
     "icons": [
         {
             "src": "/icons/logo-192.png",
@@ -15,5 +19,6 @@
     ],
     "theme_color": "#22c55e",
     "background_color": "#22c55e",
-    "display": "standalone"
+    "display": "standalone",
+    "orientation": "portrait"
 }

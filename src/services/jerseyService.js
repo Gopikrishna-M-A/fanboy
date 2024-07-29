@@ -13,7 +13,7 @@ export async function getJerseys(limit = 10, page = 1) {
     model: Team,
   })
 
-  // Create a Map to store unique jerseys
+  // // Create a Map to store unique jerseys
   const uniqueJerseys = new Map()
 
   // Iterate through all jerseys and keep only the first occurrence of each name
@@ -24,7 +24,7 @@ export async function getJerseys(limit = 10, page = 1) {
   })
 
   // Convert the Map values back to an array
-  const distinctJerseys = Array.from(uniqueJerseys.values())
+  const distinctJerseys = Array.from(allJerseys)
 
   return JSON.parse(JSON.stringify(distinctJerseys))
 }
@@ -117,7 +117,7 @@ export async function getJerseysByCategory(category) {
   })
 
   // Convert the Map values back to an array
-  const distinctJerseys = Array.from(uniqueJerseys.values())
+  const distinctJerseys = Array.from(allJerseys)
 
   return JSON.parse(JSON.stringify(distinctJerseys))
 }
