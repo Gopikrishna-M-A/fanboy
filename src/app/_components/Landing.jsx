@@ -37,7 +37,7 @@ const Landing = ({ teams, jerseys, clubs, international }) => {
   }, [jerseys.length])
 
   return (
-    <div className='pb-20 bg-gray-100'>
+    <div className='md:pb-20 bg-gray-100 '>
       {/* Banner Section */}
       <div className='relative h-52 md:h-96 bg-gray-300'>
         <Image
@@ -137,9 +137,9 @@ const Landing = ({ teams, jerseys, clubs, international }) => {
      
 
       {/* Footer Section */}
-      <footer className='bg-white md:hidden'>
-        <div className='mx-auto max-w-screen-xl px-4 pb-8 pt-4 sm:px-6 lg:px-8 lg:pt-24'>
-          <div className='mt-16 border-t border-gray-100 pt-8 sm:flex sm:items-center sm:justify-between lg:mt-24'>
+      <footer className='bg-white pb-20 md:hidden '>
+        <div className='mx-auto max-w-screen-xl px-4 pb-8 sm:px-6 lg:px-8 lg:pt-24'>
+          <div className='mt-16 border-t border-gray-100 pt-5 sm:flex sm:items-center sm:justify-between lg:mt-24'>
             <ul className='flex flex-wrap justify-center gap-4 text-xs lg:justify-end'>
               <li>
                 <Link
