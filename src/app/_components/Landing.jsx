@@ -47,8 +47,8 @@ const Landing = ({ teams, jerseys, clubs, international }) => {
           className='object-cover object-[center_50%]'
           />
         <div className='absolute inset-0 bg-green-900 bg-opacity-40 flex items-center justify-center w-screen '>
-          <Link prefetch href='/products' className="w-1/4 mx-auto">
-            <Button variant='secondary' className='w-full py-7'>SHOP NOW</Button>
+          <Link prefetch href='/products' className="w-1/3 md:w-1/4 mx-auto">
+            <Button variant='secondary' className='w-full py-7 rounded-sm bg-opacity-60 bg-green-500 text-green-950 focus:bg-green-400 text-clip font-extrabold'>SHOP NOW</Button>
           </Link>
         </div>
       </div>
@@ -182,7 +182,17 @@ const Landing = ({ teams, jerseys, clubs, international }) => {
               </li>
             </ul>
 
-            <ul className='mt-8 flex justify-center gap-6 sm:mt-0 lg:justify-end'>
+
+            <div className="flex justify-between items-center mt-2">
+               <div className="w-32 h-14 p-5 relative ml-2">
+               <Image
+            src='/images/text.png'
+            layout="fill"
+            objectFit="contain"
+            alt='logo text'
+           />
+               </div>
+              <ul className='flex justify-center gap-6 sm:mt-0 lg:justify-end'>
               <li>
                 <Link
                   href='https://wa.me/9446931531'
@@ -190,7 +200,7 @@ const Landing = ({ teams, jerseys, clubs, international }) => {
                   className='text-gray-700 transition hover:opacity-75'>
                   <span className='sr-only'>WhatsApp</span>
 
-                  <FaWhatsapp className='h-6 w-6' />
+                  <FaWhatsapp className='h-6 w-6 text-green-500' />
                 </Link>
               </li>
 
@@ -200,11 +210,14 @@ const Landing = ({ teams, jerseys, clubs, international }) => {
                   target='_blank'
                   className='text-gray-700 transition hover:opacity-75'>
                   <span className='sr-only'>Instagram</span>
-                  <FaInstagram className='h-6 w-6' />
+                  <FaInstagram className='h-6 w-6 text-green-500' />
                 </a>
               </li>
 
             </ul>
+            </div>
+
+            
           </div>
         </div>
       </footer>

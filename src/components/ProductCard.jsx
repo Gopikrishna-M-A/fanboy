@@ -38,7 +38,7 @@ const ProductCard = ({ jersey }) => {
             {jersey?.category}
           </div>
         </div> */}
-        <div className='flex justify-between items-center mb-4  mt-1'>
+        <div className='flex justify-between items-center mt-1'>
           <div>
             <span className='font-bold'>₹{jersey.price}</span>
             <span className='text-gray-500 line-through ml-2 text-xs'>
@@ -46,7 +46,7 @@ const ProductCard = ({ jersey }) => {
             </span>
           </div>
           <span className='bg-green-100 text-green-800 font-bold text-xs px-1.5 py-0.5 rounded'>
-            {Math.round(((jersey.mrp - jersey.price) / jersey.mrp) * 100)}% OFF
+            {Math.round(((jersey.mrp - jersey.price) / jersey.mrp) * 100)}% Off
           </span>
         </div>
       </div>
