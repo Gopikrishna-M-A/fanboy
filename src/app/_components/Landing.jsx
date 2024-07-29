@@ -82,7 +82,7 @@ const Landing = ({ teams, jerseys, clubs, international }) => {
         {/* <h2 className='hidden md:block text-xl pl-4 px-4 font-semibold mb-3'>Shop by Team</h2> */}
         <div className='flex overflow-x-auto pb-2 hide-scrollbar md:grid md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 md:gap-3 md:overflow-hidden'>
           {teams.map((team, index) => (
-            <div key={index} className={`flex-shrink-0 mr-3 ${index == 0 && 'ml-4'}`}>
+            <div key={index} className={`flex-shrink-0 mr-3 ${index == 0 && 'ml-4'} md:ml-0`}>
               <Link
                 prefetch
                 href={`/products/team/${team._id}`}
