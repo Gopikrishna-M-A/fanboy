@@ -48,7 +48,7 @@ const Landing = ({ teams, jerseys, clubs, international }) => {
           />
         <div className='absolute inset-0 bg-green-900 bg-opacity-40 flex items-center justify-center w-screen '>
           <Link prefetch href='/products' className="w-1/3 md:w-1/4 mx-auto">
-            <Button variant='secondary' className='w-full py-7 rounded-sm bg-opacity-60 bg-green-500 text-green-950 focus:bg-green-400 text-clip font-extrabold'>SHOP NOW</Button>
+            <Button variant='secondary' className='w-full py-7 rounded-sm bg-opacity-85 bg-green-500 text-green-950 focus:bg-green-400 text-clip font-extrabold'>SHOP NOW</Button>
           </Link>
         </div>
       </div>
