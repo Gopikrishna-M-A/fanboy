@@ -91,7 +91,7 @@ export async function getJerseysByTeam(teamId) {
   })
 
   // Convert the Map values back to an array
-  const distinctJerseys = Array.from(uniqueJerseys.values())
+  const distinctJerseys = Array.from(allJerseys)
 
   return JSON.parse(JSON.stringify(distinctJerseys))
 }
