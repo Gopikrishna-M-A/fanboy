@@ -16,48 +16,34 @@ export async function POST(request) {
   try {
     console.log(amount, jerseys, orderId, shippingAddress);
     // Send confirmation email to the user
-    // const userEmailData = await resend.emails.send({
-    //   from: 'fanboy@fanboyjerseys.in',
-    //   to: [session.user.email],
-    //   subject: 'Order Confirmation - Fanboy Jerseys',
-    //   react: UserConfirmationEmail({ 
-    //     name: session.user.name, 
-    //     orderId, 
-    //     items: jerseys, 
-    //     total: amount, 
-    //     shippingAddress 
-    //   }),
-    // })
+    const userEmailData = await resend.emails.send({
+      from: 'Fanboy <orders@fanboyjerseys.store>',
+      to: [session.user.email],
+      subject: 'Order Confirmation - Fanboy Jerseys',
+      react: UserConfirmationEmail({ 
+        name: session.user.name, 
+        orderId, 
+        items: jerseys, 
+        total: amount, 
+        shippingAddress 
+      }),
+    })
 
 
-    // // Send notification email to the owner
-    // const ownerEmailData = await resend.emails.send({
-    //   from: 'fanboy@fanboyjerseys.in',
-    //   to: ['fanboysale@gmail.com'],
-    //   subject: 'New Order Received - Fanboy Jerseys',
-    //   react: OwnerNotificationEmail({ 
-    //     orderId, 
-    //     items: jerseys, 
-    //     total: amount, 
-    //     customerName: session.user.name, 
-    //     shippingAddress 
-    //   }),
-    // });
+    // Send notification email to the owner
+    const ownerEmailData = await resend.emails.send({
+      from: 'Fanboy <orders@fanboyjerseys.store>',
+      to: ['fanboysale@gmail.com'],
+      subject: 'New Order Received - Fanboy Jerseys',
+      react: OwnerNotificationEmail({ 
+        orderId, 
+        items: jerseys, 
+        total: amount, 
+        customerName: session.user.name, 
+        shippingAddress 
+      }),
+    });
 
-    // Fake responses for testing
-        const userEmailData = {
-          id: 'fakeUserEmailId',
-          status: 'sent',
-          to: session.user.email,
-          subject: 'Order Confirmation - Fanboy Jerseys'
-      };
-
-      const ownerEmailData = {
-          id: 'fakeOwnerEmailId',
-          status: 'sent',
-          to: 'fanboysale@gmail.com',
-          subject: 'New Order Received - Fanboy Jerseys'
-      };
 
     console.log('User email sent:', userEmailData);
     console.log('Owner email sent:', ownerEmailData);

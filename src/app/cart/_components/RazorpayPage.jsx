@@ -8,13 +8,14 @@ import LottieLoader from "@/components/LottieLoader";
 
 const RazorpayPage = ({ setCurrent }) => {
   const razorpayKEY = process.env.NEXT_PUBLIC_RAZORPAY_KEY;
-  const { cart, cartTotalPrice, emptyCart } = useCart();
+  const { cart, cartTotalPrice, clearCart } = useCart();
   const { user } = useAuth()
   const [paymentSuccess, setPaymentSuccess] = useState(false);
 
 
   function transformArray(originalArray) {
     return originalArray.map(item => {
+      
       return {
         jersey: item.jersey._id, 
         quantity: item.quantity,
@@ -81,7 +82,7 @@ const RazorpayPage = ({ setCurrent }) => {
           }).then(res => {
             if(res.status === 200){
               setPaymentSuccess(true);
-              emptyCart()
+              clearCart()
 
               axios.post('/api/mail', {
                 jerseys:cart.items,
