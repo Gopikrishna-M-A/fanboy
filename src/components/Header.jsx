@@ -12,7 +12,7 @@ import Image from "next/image"
 
 const Header = () => {
   const { user } = useAuth()
-  const { cart } = useCart()
+  const { cartTotalQuantity } = useCart()
   return (
     <header className='fixed top-0 left-0 right-0 bg-green-500 shadow-md z-50'>
       <div className='container mx-auto px-4 flex justify-between items-center'>
@@ -41,11 +41,11 @@ const Header = () => {
               </Link>
               <Link href='/cart' className='relative text-white cursor-pointer'>
                 <ShoppingCart size={24} />
-                {cart?.items?.length && (
+                {cartTotalQuantity > 0 && (
                   <Badge
                     variant='destructive'
                     className='absolute -top-2 -right-2 '>
-                    {cart.items.length}
+                    {cartTotalQuantity}
                   </Badge>
                 )}
               </Link>

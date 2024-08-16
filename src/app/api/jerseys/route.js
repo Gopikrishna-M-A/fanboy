@@ -9,6 +9,8 @@ import { authOptions } from "../auth/[...nextauth]/options"
 
 export async function GET(request) {
   const session = await getServerSession(authOptions)
+  const limit = 10
+  const page = 1
 
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -16,6 +18,7 @@ export async function GET(request) {
 
   const { searchParams } = new URL(request.url)
   const id = searchParams.get("id")
+  const category = searchParams.get('category');
 
   // If an ID is provided, fetch a single jersey
   if (id) {
@@ -34,8 +37,12 @@ export async function GET(request) {
     }
   }
 
-  const limit = 10
-  const page = 1
+    if (category) {
+      const jerseys = await getJerseysByCategory(category);
+      return NextResponse.json(jerseys);
+    }
+ 
+
 
   try {
     const jerseys = await getJerseys(limit, page)

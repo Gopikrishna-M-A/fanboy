@@ -3,6 +3,7 @@ import "./globals.css"
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import { CartProvider } from "../contexts/cart"
+import Providers from "@/contexts/Providers" 
 
 export const metadata = {
   title: "Fanboy Jerseys | Where Fan's Meets a Fan",
@@ -46,6 +47,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang='en'>
       <body suppressHydrationWarning >
+      <Providers>
         <AuthProvider>
           <CartProvider>
             <Header />
@@ -53,6 +55,7 @@ export default function RootLayout({ children }) {
             <Footer />
           </CartProvider>
         </AuthProvider>
+        </Providers>
       </body>
     </html>
   )

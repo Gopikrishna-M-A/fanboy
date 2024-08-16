@@ -1,304 +1,122 @@
-// 'use client'
-// import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-// import axios from 'axios';
-// import { useAuth } from "@/hooks/useAuth"
-
-
-// const CartContext = createContext();
-
-// export const CartProvider = ({ children }) => {
-//   const { user } = useAuth()
-//   const [cart, setCart] = useState({});
-//   const [cartTotalPrice, setCartTotalPrice] = useState(0);
-//   const [cartTotalQuantity, setCartTotalQuantity] = useState(0);
-//   const [isLoading, setIsLoading] = useState(false);
-//   const [error, setError] = useState(null);
-
-//   const calculateTotals = useCallback((cartItems) => {
-//     const totalPrice = cartItems.reduce((sum, item) => sum + (item.jersey.price * item.quantity), 0);
-//     const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-//     return { totalPrice, totalQuantity };
-//   }, []);
-
-//   const updateTotals = useCallback((cartData) => {
-//     const { totalPrice, totalQuantity } = calculateTotals(cartData.items || []);
-//     setCartTotalPrice(totalPrice);
-//     setCartTotalQuantity(totalQuantity);
-//   }, [calculateTotals]);
-
-//   const fetchCart = async () => {
-//     setIsLoading(true);
-//     try {
-//       if (user) {
-//         const response = await axios.get(`/api/carts`);
-//         setCart(response.data);
-//         updateTotals(response.data);
-//       } else {
-//         setCart({});
-//         setCartTotalPrice(0);
-//         setCartTotalQuantity(0);
-//       }
-//     } catch (error) {
-//       setError(error);
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchCart();
-//   }, [user]);
-
-//   const addToCart = async (jerseyId, quantity, size) => {
-//     setIsLoading(true);
-//     try {
-//       const response = await axios.post(`/api/carts`, {
-//         jerseyId,
-//         quantity,
-//         size
-//       });
-      
-//       // Update the cart with the server response
-//       setCart(response.data);
-//       updateTotals(response.data);
-//     } catch (error) {
-//       setError(error);
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   };
-
-//   const updateCart = async (jerseyId, quantity, size) => {
-//     setIsLoading(true);
-//     try {
-//       const response = await axios.put(`/api/carts`, {
-//         jerseyId,
-//         quantity,
-//         size
-//       });
-
-//       // Update the cart with the server response
-//       setCart(response.data);
-//       updateTotals(response.data);
-//     } catch (error) {
-//       setError(error);
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   };
-
-//   const removeFromCart = async (jerseyId,size) => {
-//     // Optimistically update the cart
-//     // setCart(prevCart => {
-//     //   const updatedItems = prevCart.items.filter(item => item.jersey._id !== jerseyId);
-//     //   const updatedCart = { ...prevCart, items: updatedItems };
-//     //   updateTotals(updatedCart);
-//     //   return updatedCart;
-//     // })
-
-//     try {
-//       const response = await axios.delete(`/api/carts?id=${jerseyId}&size=${size}`);
-//       // Update with the server response
-//       setCart(response.data);
-//       updateTotals(response.data);
-//     } catch (error) {
-//       setError(error);
-//       // Revert the optimistic update
-//       fetchCart();
-//     }
-//   };
-
-//   const emptyCart = async () => {
-//     // Optimistically update the cart
-//     setCart({});
-//     setCartTotalPrice(0);
-//     setCartTotalQuantity(0);
-
-//     try {
-//       await axios.delete(`/api/carts`);
-//     } catch (error) {
-//       setError(error);
-//       // Revert the optimistic update
-//       fetchCart();
-//     }
-//   }
-
-//   return (
-//     <CartContext.Provider value={{ 
-//       cart, 
-//       addToCart, 
-//       removeFromCart, 
-//       emptyCart, 
-//       isLoading, 
-//       error, 
-//       cartTotalPrice, 
-//       cartTotalQuantity,
-//       updateCart
-//     }}>
-//       {children}
-//     </CartContext.Provider>
-//   );
-// };
-
-// export const useCart = () => {
-//   return useContext(CartContext);
-// };
-
-
-
 'use client'
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
-import { useAuth } from "@/hooks/useAuth"
 
-const CartContext = createContext();
+import { createContext, useContext } from 'react'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { fetchCart, addToCart, updateCartItem, removeFromCart, clearCart } from '../lib/cartQueries'
+import { useAuth } from '@/hooks/useAuth' 
+
+const CartContext = createContext()
 
 export const CartProvider = ({ children }) => {
-  const { user } = useAuth()
-  const [cart, setCart] = useState({});
-  const [cartTotalPrice, setCartTotalPrice] = useState(0);
-  const [cartTotalQuantity, setCartTotalQuantity] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const queryClient = useQueryClient()
+  const { user } = useAuth() 
 
-  const calculateTotals = useCallback((cartItems) => {
-    const totalPrice = cartItems.reduce((sum, item) => sum + (item.jersey.price * item.quantity), 0);
-    const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-    return { totalPrice, totalQuantity };
-  }, []);
+  const cartQueryKey = user ? ['cart', user.id] : ['cart', 'anonymous']
 
-  const updateTotals = useCallback((cartData) => {
-    const { totalPrice, totalQuantity } = calculateTotals(cartData.items || []);
-    setCartTotalPrice(totalPrice);
-    setCartTotalQuantity(totalQuantity);
-  }, [calculateTotals]);
+  const { data: cart, isLoading, error } = useQuery({
+    queryKey: cartQueryKey,
+    queryFn: fetchCart,
+  })
 
-  const fetchCart = async () => {
-    setIsLoading(true);
-    try {
-      if (user) {
-        const response = await axios.get(`/api/carts`);
-        setCart(response.data);
-        updateTotals(response.data);
-      } else {
-        setCart({});
-        setCartTotalPrice(0);
-        setCartTotalQuantity(0);
-      }
-    } catch (error) {
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const addToCartMutation = useMutation({
+    mutationFn: addToCart,
+    onMutate: async (newItem) => {
+      await queryClient.cancelQueries({ queryKey: cartQueryKey })
+      const previousCart = queryClient.getQueryData(cartQueryKey)
+      queryClient.setQueryData(cartQueryKey, (old) => ({
+        ...old,
+        items: [...(old?.items || []), newItem],
+      }))
+      return { previousCart }
+    },
+    onError: (err, newItem, context) => {
+      queryClient.setQueryData(cartQueryKey, context.previousCart)
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: cartQueryKey })
+    },
+  })
 
-  useEffect(() => {
-    fetchCart();
-  }, [user]);
+  const updateCartMutation = useMutation({
+    mutationFn: updateCartItem,
+    onMutate: async (updatedItem) => {
+      await queryClient.cancelQueries({ queryKey: cartQueryKey })
+      const previousCart = queryClient.getQueryData(cartQueryKey)
+      queryClient.setQueryData(cartQueryKey, (old) => ({
+        ...old,
+        items: old.items.map((item) =>
+          item.jersey._id === updatedItem.jerseyId && item.size === updatedItem.size
+            ? { ...item, quantity: updatedItem.quantity }
+            : item
+        ),
+      }))
+      return { previousCart }
+    },
+    onError: (err, updatedItem, context) => {
+      queryClient.setQueryData(cartQueryKey, context.previousCart)
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: cartQueryKey })
+    },
+  })
 
-  const addToCart = async (jerseyId, quantity, size) => {
-    setIsLoading(true);
-    try {
-      const response = await axios.post(`/api/carts`, {
-        jerseyId,
-        quantity,
-        size
-      });
-      
-      setCart(response.data);
-      updateTotals(response.data);
-    } catch (error) {
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const removeFromCartMutation = useMutation({
+    mutationFn: removeFromCart,
+    onMutate: async (removedItem) => {
+      await queryClient.cancelQueries({ queryKey: cartQueryKey })
+      const previousCart = queryClient.getQueryData(cartQueryKey)
+      queryClient.setQueryData(cartQueryKey, (old) => ({
+        ...old,
+        items: old.items.filter(
+          (item) => !(item.jersey._id === removedItem.jerseyId && item.size === removedItem.size)
+        ),
+      }))
+      return { previousCart }
+    },
+    onError: (err, removedItem, context) => {
+      queryClient.setQueryData(cartQueryKey, context.previousCart)
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: cartQueryKey })
+    },
+  })
 
-  const updateCart = async (jerseyId, quantity, size) => {
-    setIsLoading(true);
-    try {
-      const response = await axios.put(`/api/carts`, {
-        jerseyId,
-        quantity,
-        size
-      });
+  const clearCartMutation = useMutation({
+    mutationFn: clearCart,
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: cartQueryKey })
+      const previousCart = queryClient.getQueryData(cartQueryKey)
+      queryClient.setQueryData(cartQueryKey, { items: [] })
+      return { previousCart }
+    },
+    onError: (err, variables, context) => {
+      queryClient.setQueryData(cartQueryKey, context.previousCart)
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: cartQueryKey })
+    },
+  })
 
-      setCart(response.data);
-      updateTotals(response.data);
-    } catch (error) {
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const removeFromCart = async (jerseyId, size) => {
-    try {
-      const response = await axios.delete(`/api/carts?id=${jerseyId}&size=${size}`);
-      setCart(response.data);
-      updateTotals(response.data);
-    } catch (error) {
-      fetchCart();
-    }
-  };
-
-  const emptyCart = async () => {
-    setCart({});
-    setCartTotalPrice(0);
-    setCartTotalQuantity(0);
-    try {
-      await axios.delete(`/api/carts`);
-    } catch (error) {
-      fetchCart();
-    }
-  }
-
-  // New coupon-related functions
-  const applyCoupon = async (couponCode) => {
-    setIsLoading(true);
-    try {
-      const response = await axios.post(`/api/coupons`, { couponCode });
-      setCart(response.data.cart);
-      updateTotals(response.data.cart);
-      setError(null);
-      return response.data;
-    } catch (error) {
-      const errorMessage = error.response?.data?.error || "Failed to apply coupon";
-      setError({ message: errorMessage, details: error.response?.data?.details });
-      throw new Error(errorMessage);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const removeCoupon = async () => {
-    try {
-      const response = await axios.delete(`/api/coupons`);
-      console.log("response fom rpote",response.data);
-      setCart(response.data);
-      updateTotals(response.data);
-    } catch (error) {
-      setError(error);
-      throw error;
-    } 
-  };
+  const cartTotalPrice = cart?.items?.reduce((sum, item) => sum + item?.jersey?.price * item?.quantity, 0) || 0
+  const cartTotalQuantity = cart?.items?.reduce((sum, item) => sum + item?.quantity, 0) || 0
 
   return (
-    <CartContext.Provider value={{ 
-      cart, 
-      addToCart, 
-      removeFromCart, 
-      emptyCart, 
-      isLoading, 
-      error, 
-      cartTotalPrice, 
-      cartTotalQuantity,
-      updateCart,
-      applyCoupon,
-      removeCoupon
-    }}>
+    <CartContext.Provider
+      value={{
+        cart,
+        isLoading,
+        error,
+        addToCart: addToCartMutation.mutate,
+        updateCart: updateCartMutation.mutate,
+        removeFromCart: removeFromCartMutation.mutate,
+        clearCart: clearCartMutation.mutate,
+        cartTotalPrice,
+        cartTotalQuantity,
+      }}
+    >
       {children}
     </CartContext.Provider>
-  );
-};
+  )
+}
 
-export const useCart = () => {
-  return useContext(CartContext);
-};
+export const useCart = () => useContext(CartContext)

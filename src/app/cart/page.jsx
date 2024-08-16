@@ -1,5 +1,5 @@
 import CartPage from "./_components/CartPage"
-
+import { Suspense } from 'react'
 export const generateMetadata = async () => {
   return {
     title: 'Cart | Fanboy Jerseys',
@@ -9,7 +9,9 @@ export const generateMetadata = async () => {
 const page = async () => {
   return (
     <div className="mt-14 mx-auto p-4 md:py-10 bg-gray-100 min-h-screen">
+      {/* <Suspense fallback={<CartLoading />}> */}
       <CartPage />
+      {/* </Suspense> */}
     </div>
   )
 }

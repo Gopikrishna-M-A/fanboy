@@ -5,7 +5,10 @@ import { authOptions } from "../auth/[...nextauth]/options"
 
 export async function GET(request) {
   const session = await getServerSession(authOptions)
+  const limit = 10
+  const page = 1
 
+  
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
@@ -29,8 +32,7 @@ export async function GET(request) {
     }
   }
 
-  const limit = 10
-  const page = 1
+
 
   try {
     const teams = await getAllTeams(limit, page)
