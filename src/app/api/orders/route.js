@@ -7,7 +7,6 @@ import {
   getOrderHistory,
 } from "@/services/orderService"
 
-
 // POST: Create a new order
 export async function POST(request) {
   const session = await getServerSession(authOptions)
@@ -26,7 +25,6 @@ export async function POST(request) {
     )
   }
 }
-
 
 export async function GET(request) {
     const session = await getServerSession(authOptions)
