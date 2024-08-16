@@ -5,6 +5,7 @@ import Header from "@/components/Header"
 import { CartProvider } from "../contexts/cart"
 import Providers from "@/contexts/Providers" 
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/react"
 
 export const metadata = {
   title: "Fanboy Jerseys | Where Fan's Meets a Fan",
@@ -54,6 +55,7 @@ export default function RootLayout({ children }) {
             <Header />
             {children}
             <SpeedInsights />
+            <Analytics />
             <Footer />
           </CartProvider>
         </AuthProvider>
