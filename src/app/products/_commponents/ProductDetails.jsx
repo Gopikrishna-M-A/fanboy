@@ -27,19 +27,54 @@ import { useCart } from "@/contexts/cart"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { signIn, useSession } from "next-auth/react"
-import { useQueryClient } from "@tanstack/react-query"
+import { useQueryClient, useQuery } from "@tanstack/react-query"
+import axios from "axios"
+import { ProductDetailsSkeleton } from "@/components/SkeletonComponents"
 
-const ProductDetails = ({ jerseyData }) => {
+const fetchJersey = async (id) => {
+  try {
+    const { data } = await axios.get(`/api/jerseys?id=${id}`)
+    return data
+  } catch (error) {
+    console.error("Error fetching jerseys:", error.message)
+    throw new Error("Failed to fetch jersey. Please try again later.")
+  }
+}
+
+
+const ProductDetails = ({ id }) => {
+
+  const {
+    data: jerseyData,
+    isLoading: jerseyLoading,
+    error: jerseyError,
+  } = useQuery({
+    queryKey: ["jersey", id],
+    queryFn: () => fetchJersey(id),
+  })
+
   const queryClient = useQueryClient()
   const router = useRouter()
   const { data: session } = useSession()
-  const user = session?.user
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [selectedSize, setSelectedSize] = useState("S")
-  const [selectedVariant, setSelectedVariant] = useState(jerseyData.variant)
   const { addToCart, isLoading } = useCart()
   const [cartButtonClicked, setCartButtonClicked] = useState(false)
+  const [selectedVariant, setSelectedVariant] = useState(null)
+
+  useEffect(() => {
+    if (jerseyData && jerseyData.variant) {
+      setSelectedVariant(jerseyData.variant)
+    }
+  }, [jerseyData])
+
+  if (jerseyError) throw new Error("Failed to fetch jersey. Please try again later.")
+  if (jerseyLoading) return <ProductDetailsSkeleton/>
+
+  
+  const user = session?.user
   const cartQueryKey = user ? ['cart', user.id] : ['cart', 'anonymous']
+  // const currentVariant = jerseyData.variant
   const jersey = jerseyData.variants[selectedVariant] || jerseyData
 
 

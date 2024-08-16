@@ -3,7 +3,8 @@ import { NextResponse } from "next/server"
 import {
   getJerseys,
   getJerseyById,
-  createJersey,
+  getJerseysByTeam,
+  getJerseysByCategory,
 } from "@/services/jerseyService" // Importing jersey functions
 import { authOptions } from "../auth/[...nextauth]/options"
 
@@ -12,13 +13,11 @@ export async function GET(request) {
   const limit = 10
   const page = 1
 
-  // if (!session) {
-  //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  // }
 
   const { searchParams } = new URL(request.url)
   const id = searchParams.get("id")
   const category = searchParams.get('category');
+  const teamId = searchParams.get('teamId');
 
   // If an ID is provided, fetch a single jersey
   if (id) {
@@ -27,7 +26,7 @@ export async function GET(request) {
       if (!jersey) {
         return NextResponse.json({ error: "Jersey not found" }, { status: 404 })
       }
-      return NextResponse.json({ jersey })
+      return NextResponse.json(jersey)
     } catch (error) {
       console.error("Failed to fetch jersey:", error)
       return NextResponse.json(
@@ -39,6 +38,11 @@ export async function GET(request) {
 
     if (category) {
       const jerseys = await getJerseysByCategory(category);
+      return NextResponse.json(jerseys);
+    }
+
+    if (teamId){
+      const jerseys = await getJerseysByTeam(teamId);
       return NextResponse.json(jerseys);
     }
  

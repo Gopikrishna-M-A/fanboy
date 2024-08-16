@@ -1,4 +1,3 @@
-import { getJerseysByCategory } from "@/services/jerseyService"
 import ProductsDisplay from "../../_commponents/ProductDisplay"
 
 export const generateMetadata = async ({ params }) => {
@@ -13,10 +12,9 @@ export const generateMetadata = async ({ params }) => {
 }
 
 const page = async ({ params }) => {
-  const jerseys = await getJerseysByCategory(params.slug)
   return (
     <div className='mt-14'>
-      <ProductsDisplay jerseys={jerseys} />
+     <ProductsDisplay queryKey="category" queryParam={params.slug} />
     </div>
   )
 }
