@@ -1,4 +1,3 @@
-import { getServerSession } from "next-auth"
 import { NextResponse } from "next/server"
 import {
   getJerseys,
@@ -6,20 +5,17 @@ import {
   getJerseysByTeam,
   getJerseysByCategory,
 } from "@/services/jerseyService" // Importing jersey functions
-import { authOptions } from "../auth/[...nextauth]/options"
 
 export async function GET(request) {
-  const session = await getServerSession(authOptions)
-  const limit = 10
-  const page = 1
-
 
   const { searchParams } = new URL(request.url)
   const id = searchParams.get("id")
   const category = searchParams.get('category');
   const teamId = searchParams.get('teamId');
+  const limit = parseInt(searchParams.get('limit') || '10', 10)
+  const page = parseInt(searchParams.get('page') || '1', 10)
 
-  // If an ID is provided, fetch a single jersey
+  try {
   if (id) {
     try {
       const jersey = await getJerseyById(id)
@@ -46,9 +42,6 @@ export async function GET(request) {
       return NextResponse.json(jerseys);
     }
  
-
-
-  try {
     const jerseys = await getJerseys(limit, page)
     return NextResponse.json( jerseys )
   } catch (error) {

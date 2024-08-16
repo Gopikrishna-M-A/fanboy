@@ -16,6 +16,8 @@ const JerseySchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now }
 });
 
+JerseySchema.index({ name: 'text', description: 'text' });
+
 JerseySchema.pre('save', function(next) {
   this.updatedAt = Date.now();
   next();
