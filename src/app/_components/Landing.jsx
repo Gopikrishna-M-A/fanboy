@@ -3,11 +3,12 @@ import React, { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { ShoppingCart } from "lucide-react"
 import {JerseyCardGrid} from "./JerseyCard"
 import ProductCard from "@/components/ProductCard"
 import { FaInstagram, FaWhatsapp } from "react-icons/fa"
-import CategoryCard from "@/components/CategoryCard"
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios"
+import { ProductGridSkeleton, TeamGridSkeleton } from "@/components/SkeletonComponents"
 
 const cardsData = [
   {
@@ -23,18 +24,41 @@ const cardsData = [
     path:'international'
   },
 ];
+const fetchJerseys = async () => {
+  try {
+    const { data } = await axios.get('/api/jerseys');
+    return data;
+  } catch (error) {
+    console.error('Error fetching jerseys:', error.message);
+    throw new Error('Failed to fetch jerseys. Please try again later.');
+  }
+};
 
-const Landing = ({ teams, jerseys, clubs, international }) => {
-  const [activeSlide, setActiveSlide] = useState(0)
+const fetchTeams = async () => {
+  try {
+    const { data } = await axios.get('/api/teams');
+    return data;
+  } catch (error) {
+    console.error('Error fetching teams:', error.message);
+    throw new Error('Failed to fetch teams. Please try again later.');
+  }
+};
+
+const Landing = () => {
+  const { data: jerseys, isLoading: jerseysLoading, error: jerseysError } = useQuery({
+    queryKey: ['jerseys'],
+    queryFn: fetchJerseys,
+  })
+  const { data: teams, isLoading: teamsLoading, error: teamsError } = useQuery({
+    queryKey: ['teams'],
+    queryFn: fetchTeams,
+  }) 
 
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveSlide((prev) => (prev + 1) % jerseys.length)
-    }, 5000) // Change slide every 5 seconds
+  if (jerseysError)  throw new Error('Failed to fetch jerseys. Please try again later.');
+  if (teamsError) throw new Error('Failed to fetch teams. Please try again later.');
 
-    return () => clearInterval(interval)
-  }, [jerseys.length])
+
 
   return (
     <div className='md:pb-20 bg-gray-100 '>
@@ -53,81 +77,53 @@ const Landing = ({ teams, jerseys, clubs, international }) => {
         </div>
       </div>
 
-      {/* <div className="relative h-96 bg-gray-300 overflow-hidden">
-        {jerseys.map((product, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
-              index === activeSlide ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
-            <Image layout="fill" src={product.images[0]} alt={product.name} className="object-cover" />
-            <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center text-white text-center">
-              <div className="text-3xl font-bold mb-4">
-                <h1>{product.name}</h1>
-              </div>
-              <Link href={`/products/${product._id}`}>
-                <Button variant="secondary" className="flex items-center">
-                  <ShoppingCart className="mr-2" />
-                  Shop Now
-                </Button>
-              </Link>
-            </div>
-          </div>
-        ))}
-      </div> */}
 
       {/* Shop by Category Section */}
+
       <div className='mt-6 md:mx-auto max-w-screen-xl md:px-4 md:pb-6 md:pt-16 lg:px-8 lg:pt-10'>
-        {/* <h2 className='hidden md:block text-xl pl-4 px-4 font-semibold mb-3'>Shop by Team</h2> */}
-        <div className='flex overflow-x-auto pb-2 hide-scrollbar md:grid md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 md:gap-3 md:overflow-hidden'>
-          {teams.map((team, index) => (
-            <div key={index} className={`flex-shrink-0 mr-3 ${index == 0 && 'ml-4'} md:ml-0`}>
-              <Link
-                prefetch
-                href={`/products/team/${team._id}`}
-                className='w-20 h-20 md:w-40 md:h-40 bg-gray-200 rounded-full md:rounded-sm md:p-10 flex items-center justify-center relative shadow-md'>
-                <Image
-                  layout='fill'
-                  src={team.logo}
-                  alt={team.name}
-                  className='object-cover rounded-full md:rounded-sm'
-                />
-              </Link>
-            </div>
-          ))}
-        </div>
+        {teamsLoading ? (
+          <TeamGridSkeleton />
+        ) : (
+          <div className='flex overflow-x-auto pb-2 hide-scrollbar md:grid md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 md:gap-3 md:overflow-hidden'>
+            {teams?.map((team, index) => (
+             <div key={index} className={`flex-shrink-0 mr-3 ${index == 0 && 'ml-4'} md:ml-0`}>
+             <Link
+               prefetch
+               href={`/products/team/${team._id}`}
+               className='w-20 h-20 md:w-40 md:h-40 bg-gray-200 rounded-full md:rounded-sm md:p-10 flex items-center justify-center relative shadow-md'>
+               <Image
+                 layout='fill'
+                 src={team.logo}
+                 alt={team.name}
+                 className='object-cover rounded-full md:rounded-sm'
+               />
+             </Link>
+           </div>
+            ))}
+          </div>
+        )}
       </div>
+      
 
 
-    
-      <div className='mt-6 md:mx-auto md:max-w-screen-xl md:px-4 md:pb-6 md:pt-16  lg:pt-10 '>
-      {/* <h2 className='hidden md:block text-xl px-4 font-semibold mb-3 '>Shop by Category</h2> */}
+    {!jerseysLoading && <div className='mt-6 md:mx-auto md:max-w-screen-xl md:px-4 md:pb-6 md:pt-16  lg:pt-10 '>
       <JerseyCardGrid cards={cardsData} />
-      </div>
-
-      {/* <div className='hidden md:block md:mx-auto max-w-screen-xl md:px-4 md:pb-6 md:pt-16 lg:px-8 lg:pt-10'>
-      <h2 className='text-xl font-semibold mb-3'>Clubs</h2>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-        {clubs.map((jersey)=>(
-         <CategoryCard jersey={jersey}/>
-        ))}
-      </div>
-      <h2 className='text-xl mt-4 font-semibold mb-3'>International</h2>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-        {international.map((jersey)=>(
-         <CategoryCard jersey={jersey}/>
-        ))}
-      </div>
-      </div> */}
+      </div>}
+     
 
       <div className='px-4 md:mx-auto max-w-screen-xl md:px-4 md:pb-6 md:pt-16 lg:px-8 lg:pt-10'>
 
-      {/* <h2 className='hidden md:block text-xl mt-4 font-semibold mb-3'>All</h2> */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-        {jerseys.map((jersey)=>(
-         <ProductCard jersey={jersey}/>
-        ))}
+
+      <div className='px-4 md:mx-auto max-w-screen-xl md:px-4 md:pb-6 md:pt-16 lg:px-8 lg:pt-10'>
+        {jerseysLoading ? (
+          <ProductGridSkeleton />
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            {jerseys?.map((jersey) => (
+              <ProductCard key={jersey._id} jersey={jersey} />
+            ))}
+          </div>
+        )}
       </div>
 
       </div>

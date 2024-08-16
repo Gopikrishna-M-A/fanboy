@@ -12,9 +12,9 @@ export async function GET(request) {
   const limit = 10
   const page = 1
 
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  }
+  // if (!session) {
+  //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  // }
 
   const { searchParams } = new URL(request.url)
   const id = searchParams.get("id")
@@ -46,32 +46,11 @@ export async function GET(request) {
 
   try {
     const jerseys = await getJerseys(limit, page)
-    return NextResponse.json({ jerseys })
+    return NextResponse.json( jerseys )
   } catch (error) {
     console.error("Failed to fetch jerseys:", error)
     return NextResponse.json(
       { error: "Failed to fetch jerseys" },
-      { status: 500 }
-    )
-  }
-}
-
-export async function POST(request) {
-  const session = await getServerSession(authOptions)
-
-  // if (!session) {
-  //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  // }
-
-  const jerseyData = await request.json()
-
-  try {
-    const jersey = await createJersey(jerseyData)
-    return NextResponse.json({ jersey })
-  } catch (error) {
-    console.error("Failed to create jersey:", error)
-    return NextResponse.json(
-      { error: "Failed to create jersey" },
       { status: 500 }
     )
   }

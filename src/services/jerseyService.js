@@ -17,11 +17,11 @@ export async function getJerseys(limit = 10, page = 1) {
   const uniqueJerseys = new Map()
 
   // Iterate through all jerseys and keep only the first occurrence of each name
-  allJerseys.forEach((jersey) => {
-    if (!uniqueJerseys.has(jersey.name)) {
-      uniqueJerseys.set(jersey.name, jersey)
-    }
-  })
+  // allJerseys.forEach((jersey) => {
+  //   if (!uniqueJerseys.has(jersey.name)) {
+  //     uniqueJerseys.set(jersey.name, jersey)
+  //   }
+  // })
 
   // Convert the Map values back to an array
   const distinctJerseys = Array.from(allJerseys)

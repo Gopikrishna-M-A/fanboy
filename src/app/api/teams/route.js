@@ -9,9 +9,9 @@ export async function GET(request) {
   const page = 1
 
   
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  }
+  // if (!session) {
+  //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  // }
 
   const { searchParams } = new URL(request.url)
   const id = searchParams.get("id")
@@ -36,7 +36,7 @@ export async function GET(request) {
 
   try {
     const teams = await getAllTeams(limit, page)
-    return NextResponse.json({ teams })
+    return NextResponse.json(teams)
   } catch (error) {
     console.error("Failed to fetch teams:", error)
     return NextResponse.json(
