@@ -116,7 +116,7 @@ const Landing = () => {
 
       <div className='px-4 md:mx-auto max-w-screen-xl md:px-4 md:pb-6 md:pt-16 lg:px-8 lg:pt-10'>
         {jerseysLoading ? (
-          <ProductGridSkeleton />
+          <ProductGridSkeleton/>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {jerseys?.map((jersey) => (

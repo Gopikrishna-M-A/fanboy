@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge"
 
 export const ProductCardSkeleton = () => {
   return (
-    <div className='block w-full sm:w-64 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 rounded-lg overflow-hidden relative'>
+    <div className='mt-5 block w-full sm:w-64 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 rounded-lg overflow-hidden relative'>
       <div className='aspect-w-1 aspect-h-1 w-full relative h-52 md:h-60'>
         <Skeleton className="w-full h-full rounded-lg" />
       </div>
