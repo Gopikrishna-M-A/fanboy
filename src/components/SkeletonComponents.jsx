@@ -2,6 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Shirt } from "lucide-react";
 
 
 export const ProductCardSkeleton = () => {
@@ -145,3 +146,15 @@ export const ProductDetailsSkeleton = () => {
     </div>
   );
 };
+
+
+export const JerseyImageSkeleton = () => {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center bg-gray-100 animate-pulse">
+      <div className="relative">
+        <div className="absolute inset-0 bg-gray-200 rounded-full scale-150 animate-ping"></div>
+        <Shirt className="h-16 w-16 text-gray-200 z-10 relative" />
+      </div>
+    </div>
+  )
+}

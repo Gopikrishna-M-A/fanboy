@@ -29,7 +29,7 @@ import { useRouter } from "next/navigation"
 import { signIn, useSession } from "next-auth/react"
 import { useQueryClient, useQuery } from "@tanstack/react-query"
 import axios from "axios"
-import { ProductDetailsSkeleton } from "@/components/SkeletonComponents"
+import { JerseyImageSkeleton, ProductDetailsSkeleton } from "@/components/SkeletonComponents"
 
 const fetchJersey = async (id) => {
   try {
@@ -61,10 +61,12 @@ const ProductDetails = ({ id }) => {
   const { addToCart, isLoading } = useCart()
   const [cartButtonClicked, setCartButtonClicked] = useState(false)
   const [selectedVariant, setSelectedVariant] = useState(null)
+  const [isImageLoading, setIsImageLoading] = useState(true)
 
   useEffect(() => {
     if (jerseyData && jerseyData.variant) {
       setSelectedVariant(jerseyData.variant)
+      setIsImageLoading(true) 
     }
   }, [jerseyData])
 
@@ -97,6 +99,7 @@ const ProductDetails = ({ id }) => {
   const handleVariantChange = (variant) => {
     setSelectedVariant(variant)
     setCartButtonClicked(false)
+    setIsImageLoading(true) 
   }
 
   const handleAddToCart = () => {
@@ -146,12 +149,14 @@ const ProductDetails = ({ id }) => {
           <CardContent className='p-6'>
             <div className='relative aspect-square mb-4'>
               <div className='aspect-w-1 aspect-h-1 h-full w-full relative'>
+              {isImageLoading && <JerseyImageSkeleton/>}
                 <Image
                   src={jersey.images[currentImageIndex]}
                   width={400}
                   height={400}
                   className='w-full h-full object-contain object-center'
                   alt={jersey?.name}
+                  onLoad={() => setIsImageLoading(false)}
                 />
               </div>
               <Button
