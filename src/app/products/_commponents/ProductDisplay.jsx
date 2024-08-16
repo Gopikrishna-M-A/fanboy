@@ -6,7 +6,17 @@ import { useQuery } from "@tanstack/react-query"
 import {
   ProductGridSkeleton,
 } from "@/components/SkeletonComponents"
-import SearchBar from './SearchBar';
+import { Filter, Search } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuLabel, 
+  DropdownMenuSeparator, 
+  DropdownMenuTrigger 
+} from "@/components/ui/dropdown-menu";
 
 
 const fetchJerseysByTeam = async (teamId) => {
@@ -58,41 +68,79 @@ const useJerseys = (queryKey, queryParam) => {
 const ProductsDisplay = ({ queryKey, queryParam }) => {
   const { data: jerseys, isLoading, isError } = useJerseys(queryKey, queryParam);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filters, setFilters] = useState({
-    category: '',
-    team: '',
-    variant: '',
-    priceRange: [0, 2000],
-  });
+  const [sortOption, setSortOption] = useState('');
 
-  const filteredJerseys = useMemo(() => {
+  const filteredAndSortedJerseys = useMemo(() => {
     if (!jerseys) return [];
-    return jerseys.filter(jersey => {
+    
+    let filtered = jerseys.filter(jersey => {
       const matchesSearch = (
         jersey.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         jersey.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
         jersey.team.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
-      const matchesCategory = !filters.category || jersey.category === filters.category;
-      const matchesTeam = !filters.team || jersey.team.name.toLowerCase().includes(filters.team.toLowerCase());
-      const matchesVariant = !filters.variant || jersey.variant === filters.variant;
-      const matchesPrice = jersey.price >= filters.priceRange[0] && jersey.price <= filters.priceRange[1];
-      
-      return matchesSearch && matchesCategory && matchesTeam && matchesVariant && matchesPrice;
+      return matchesSearch;
     });
-  }, [jerseys, searchTerm, filters]);
+
+    switch (sortOption) {
+      case 'price-low-high':
+        return filtered.sort((a, b) => a.price - b.price);
+      case 'price-high-low':
+        return filtered.sort((a, b) => b.price - a.price);
+      case 'home':
+        return filtered.filter(jersey => jersey.name.toLowerCase().includes('home'));
+      case 'away':
+        return filtered.filter(jersey => jersey.name.toLowerCase().includes('away'));
+      default:
+        return filtered;
+    }
+  }, [jerseys, searchTerm, sortOption]);
 
   if (isError) throw new Error("Failed to fetch jerseys. Please try again later.")
   
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 md:px-20 md:py-10">
       <main className="flex-grow p-4 pb-32">
-      <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <div className='mb-4 flex space-x-2'>
+          <div className='relative flex-grow'>
+            <Search className='absolute left-2 top-2.5 h-4 w-4 text-gray-500' />
+            <Input
+              type='text'
+              className='pl-8'
+              placeholder="Search jerseys..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant='outline' size='icon'>
+                <Filter className='h-4 w-4' />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className='mr-4'>
+              <DropdownMenuLabel>Sort & Filter</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => setSortOption('price-low-high')}>
+                Price: Low to High
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSortOption('price-high-low')}>
+                Price: High to Low
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSortOption('home')}>
+                Home Jerseys
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSortOption('away')}>
+                Away Jerseys
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       {isLoading ? (
         <ProductGridSkeleton />
       ) : (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-          {filteredJerseys?.map((jersey) => (
+          {filteredAndSortedJerseys?.map((jersey) => (
             <ProductCard key={jersey._id} jersey={jersey} />
           ))}
         </div>

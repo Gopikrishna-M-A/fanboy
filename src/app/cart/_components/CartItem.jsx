@@ -34,6 +34,7 @@ const CartItem = ({ cartItem, index }) => {
             width={70}
             height={70}
             src={cartItem?.jersey?.images && cartItem?.jersey?.images?.[0]}
+            className="rounded-md"
           />
           {isOutOfStock && (
             <div className='absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center'>

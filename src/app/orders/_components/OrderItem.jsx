@@ -3,6 +3,7 @@ import React from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import Image from "next/image"
 
 const formatDate = (dateString) => {
   const options = { year: "numeric", month: "long", day: "numeric" }
@@ -43,10 +44,12 @@ const OrderItem = ({ order }) => {
           <div className='flex flex-col gap-2'>
             {order.jerseys.map((jersey, i) => (
               <div className='flex gap-1 items-center'>
-                <img
+                <Image
                   src={jersey.jersey.images[0]}
+                  width={70}
+                  height={70}
                   alt={"product image"}
-                  className='w-16 h-16 object-contain rounded mr-4'
+                  className='w-16 h-16 object-contain rounded-md mr-4'
                 />
                 <div>
                   <p className='font-medium'>{jersey.jersey.name}</p>
