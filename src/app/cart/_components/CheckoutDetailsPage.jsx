@@ -84,7 +84,7 @@ const CheckoutDetailsPage = ({setCurrent}) => {
                 <Input
                   id='phone'
                   name='phone'
-                  value={formData.phone}
+                  value={formData?.phone}
                   onChange={handleInputChange}
                   required
                 />
@@ -97,7 +97,7 @@ const CheckoutDetailsPage = ({setCurrent}) => {
               <Textarea
                 id='street'
                 name='street'
-                value={formData.street}
+                value={formData?.street}
                 onChange={handleInputChange}
                 required
               />
@@ -110,7 +110,7 @@ const CheckoutDetailsPage = ({setCurrent}) => {
                 <Input
                   id='city'
                   name='city'
-                  value={formData.city}
+                  value={formData?.city}
                   onChange={handleInputChange}
                   required
                 />
@@ -122,7 +122,7 @@ const CheckoutDetailsPage = ({setCurrent}) => {
                 <Input
                   id='state'
                   name='state'
-                  value={formData.state}
+                  value={formData?.state}
                   onChange={handleInputChange}
                   required
                 />
@@ -135,7 +135,7 @@ const CheckoutDetailsPage = ({setCurrent}) => {
               <Input
                 id='zipcode'
                 name='zipcode'
-                value={formData.zipcode}
+                value={formData?.zipcode}
                 onChange={handleInputChange}
                 required
               />

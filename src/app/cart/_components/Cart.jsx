@@ -22,7 +22,7 @@ const Cart = ({ setCurrent }) => {
   const [couponCode, setCouponCode] = useState('')
   const [couponLoading,setCouponLoading] = useState(false)
   // const [couponError, setCouponError] = useState('')
-  const hasOutOfStockItems = cart?.items?.some(item => item.jersey.stock === 0)
+  const hasOutOfStockItems = cart?.items?.some(item => item?.jersey?.stock === 0)
 
 
   useEffect(()=>{
@@ -76,7 +76,7 @@ const Cart = ({ setCurrent }) => {
         </CardHeader>
         <CardContent>
           {cart?.items?.map((cartItem, index) => (
-            <div key={cartItem._id} className='rounded-3xl bg-white'>
+            <div key={cartItem?._id} className='rounded-3xl bg-white'>
               <CartItem
                 index={index === cart?.items?.length - 1}
                 cartItem={cartItem}
@@ -109,7 +109,7 @@ const Cart = ({ setCurrent }) => {
               <div className="mt-2 flex items-center justify-between bg-green-100 p-2 rounded">
                 <span className="flex items-center">
                   <Tag className="mr-2 h-4 w-4" />
-                  Coupon applied: {cart.appliedCoupon.code}
+                  Coupon applied: {cart?.appliedCoupon?.code}
                 </span>
                 <Button variant="ghost" size="sm" onClick={handleRemoveCoupon}>
                   Remove
