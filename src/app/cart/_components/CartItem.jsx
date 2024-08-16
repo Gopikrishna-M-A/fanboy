@@ -6,9 +6,9 @@ import { Separator } from "@/components/ui/separator"
 import { useCart } from "@/contexts/cart"
 
 const CartItem = ({ cartItem, index }) => {
-  const [quantity, setQuantity] = useState(cartItem.quantity)
+  const [quantity, setQuantity] = useState(cartItem?.quantity)
   const { updateCart, removeFromCart } = useCart()
-  const isOutOfStock = cartItem.jersey.stock === 0
+  const isOutOfStock = cartItem?.jersey?.stock === 0
 
   const handleCartUpdate = (newQuantity) => {
     setQuantity(newQuantity)
@@ -33,7 +33,7 @@ const CartItem = ({ cartItem, index }) => {
           <Image
             width={70}
             height={70}
-            src={cartItem?.jersey?.images && cartItem?.jersey?.images[0]}
+            src={cartItem?.jersey?.images && cartItem?.jersey?.images?.[0]}
           />
           {isOutOfStock && (
             <div className='absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center'>
@@ -44,7 +44,7 @@ const CartItem = ({ cartItem, index }) => {
           )}
         </div>
         <div className='flex-grow '>
-          <div level={4}>{cartItem.jersey.name}</div>
+          <div level={4}>{cartItem?.jersey?.name}</div>
           <p className='text-gray-300 uppercase'>{cartItem?.jersey?.variant}</p>
           <p className='text-gray-300 '>Size {cartItem?.size}</p>
           <div className='text-right w-full'>
