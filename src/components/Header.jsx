@@ -15,7 +15,7 @@ const Header = () => {
   const { cartTotalQuantity } = useCart()
   return (
     <header className='absolute top-0 left-0 right-0 z-50 bg-white py-4 md:px-4'>
-      <div className='container mx-auto px-2 md:px-0 flex justify-between items-center md:max-w-7xl '>
+      <div className='container mx-auto px-4  flex justify-between items-center md:max-w-7xl '>
         <div className="">
           <Link href='/' className='cursor-pointer flex gap-2 items-center'>
             <Avatar size={12} className='bg-green-500'>
