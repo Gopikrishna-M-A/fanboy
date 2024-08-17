@@ -99,7 +99,7 @@ const ProductsDisplay = ({ queryKey, queryParam }) => {
   if (isError) throw new Error("Failed to fetch jerseys. Please try again later.")
   
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100 md:px-20 md:py-10">
+    <div className="flex flex-col min-h-screen md:px-20 md:py-10">
       <main className="flex-grow p-4 pb-32">
       <div className='mb-4 flex space-x-2'>
           <div className='relative flex-grow'>

@@ -29,7 +29,10 @@ import { useRouter } from "next/navigation"
 import { signIn, useSession } from "next-auth/react"
 import { useQueryClient, useQuery } from "@tanstack/react-query"
 import axios from "axios"
-import { JerseyImageSkeleton, ProductDetailsSkeleton } from "@/components/SkeletonComponents"
+import {
+  JerseyImageSkeleton,
+  ProductDetailsSkeleton,
+} from "@/components/SkeletonComponents"
 
 const fetchJersey = async (id) => {
   try {
@@ -41,9 +44,7 @@ const fetchJersey = async (id) => {
   }
 }
 
-
 const ProductDetails = ({ id }) => {
-
   const {
     data: jerseyData,
     isLoading: jerseyLoading,
@@ -66,19 +67,18 @@ const ProductDetails = ({ id }) => {
   useEffect(() => {
     if (jerseyData && jerseyData.variant) {
       setSelectedVariant(jerseyData.variant)
-      setIsImageLoading(true) 
+      setIsImageLoading(true)
     }
   }, [jerseyData])
 
-  if (jerseyError) throw new Error("Failed to fetch jersey. Please try again later.")
-  if (jerseyLoading) return <ProductDetailsSkeleton/>
+  if (jerseyError)
+    throw new Error("Failed to fetch jersey. Please try again later.")
+  if (jerseyLoading) return <ProductDetailsSkeleton />
 
-  
   const user = session?.user
-  const cartQueryKey = user ? ['cart', user.id] : ['cart', 'anonymous']
+  const cartQueryKey = user ? ["cart", user.id] : ["cart", "anonymous"]
   // const currentVariant = jerseyData.variant
   const jersey = jerseyData.variants[selectedVariant] || jerseyData
-
 
   const nextImage = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % jersey.images.length)
@@ -99,7 +99,7 @@ const ProductDetails = ({ id }) => {
   const handleVariantChange = (variant) => {
     setSelectedVariant(variant)
     setCartButtonClicked(false)
-    setIsImageLoading(true) 
+    setIsImageLoading(true)
   }
 
   const handleAddToCart = () => {
@@ -108,11 +108,11 @@ const ProductDetails = ({ id }) => {
         router.push("/cart")
       } else {
         setCartButtonClicked(true)
-        const newItem = { 
-          jerseyId: jersey._id, 
-          quantity: 1, 
+        const newItem = {
+          jerseyId: jersey._id,
+          quantity: 1,
           size: selectedSize,
-          price: jersey.price  // Include the price
+          price: jersey.price, // Include the price
         }
         addToCart(newItem, {
           onMutate: async (newItem) => {
@@ -120,11 +120,14 @@ const ProductDetails = ({ id }) => {
             const previousCart = queryClient.getQueryData(cartQueryKey)
             queryClient.setQueryData(cartQueryKey, (old) => ({
               ...old,
-              items: [...(old?.items || []), {
-                jersey: { _id: newItem.jerseyId, price: newItem.price },
-                quantity: newItem.quantity,
-                size: newItem.size
-              }],
+              items: [
+                ...(old?.items || []),
+                {
+                  jersey: { _id: newItem.jerseyId, price: newItem.price },
+                  quantity: newItem.quantity,
+                  size: newItem.size,
+                },
+              ],
             }))
             return { previousCart }
           },
@@ -149,30 +152,34 @@ const ProductDetails = ({ id }) => {
           <CardContent className='p-6'>
             <div className='relative aspect-square mb-4'>
               <div className='aspect-w-1 aspect-h-1 h-full w-full relative'>
-              {isImageLoading && <JerseyImageSkeleton/>}
+                {isImageLoading && <JerseyImageSkeleton />}
                 <Image
                   src={jersey.images[currentImageIndex]}
                   width={400}
                   height={400}
-                  className='w-full h-full object-contain object-center'
+                  className='w-full h-full object-cover object-center rounded-lg'
                   alt={jersey?.name}
                   onLoad={() => setIsImageLoading(false)}
                 />
               </div>
-              <Button
-                variant='outline'
-                size='icon'
-                className='absolute left-2 top-1/2 -translate-y-1/2'
-                onClick={prevImage}>
-                <ChevronLeft className='h-4 w-4' />
-              </Button>
-              <Button
-                variant='outline'
-                size='icon'
-                className='absolute right-2 top-1/2 -translate-y-1/2'
-                onClick={nextImage}>
-                <ChevronRight className='h-4 w-4' />
-              </Button>
+              {jersey?.images?.length > 1 && (
+                <>
+                  <Button
+                    variant='outline'
+                    size='icon'
+                    className='absolute left-2 top-1/2 -translate-y-1/2'
+                    onClick={prevImage}>
+                    <ChevronLeft className='h-4 w-4' />
+                  </Button>
+                  <Button
+                    variant='outline'
+                    size='icon'
+                    className='absolute right-2 top-1/2 -translate-y-1/2'
+                    onClick={nextImage}>
+                    <ChevronRight className='h-4 w-4' />
+                  </Button>
+                </>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -209,7 +216,7 @@ const ProductDetails = ({ id }) => {
                         onClick={() => {
                           setSelectedSize(size)
                           setCartButtonClicked(false)
-                          }}>
+                        }}>
                         {size}
                       </Button>
                     ))}
@@ -235,10 +242,12 @@ const ProductDetails = ({ id }) => {
                   </div>
                 </div>
               </div>
- 
-              {jersey?.stock === 0 ?  <Button className='w-full' variant='destructive'>
+
+              {jersey?.stock === 0 ? (
+                <Button className='w-full' variant='destructive'>
                   Out Of Stock
-                </Button> : isLoading ? (
+                </Button>
+              ) : isLoading ? (
                 <Button className='w-full' disabled>
                   <Loader2 className='mr-2 h-4 w-4 animate-spin' />
                   Please wait

@@ -29,18 +29,19 @@ const OrdersListing = () => {
     queryKey: ["orders"],
     queryFn: () => fetchOrders(),
   })
+  console.log(orders);
+  
 
   const [searchTerm, setSearchTerm] = useState("")
-  const filteredOrders = orders?.filter(
-    (order) =>
-      order.orderNumber.includes(searchTerm) ||
-      order.jerseys.some((j) =>
-        j.jersey.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-  )
+  const filteredOrders = orders?.filter((order) =>
+    order.orderNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    order.jerseys.some((j) =>
+      j.jersey.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
 
   return (
-    <div className='mx-auto p-4 pb-20 bg-gray-50 min-h-screen md:px-20 md:py-10'>
+    <div className='mx-auto p-4 pb-20 min-h-screen md:px-20 md:py-10'>
       <div className=''>
         <CardHeader className='p-0 py-2'>
           <CardTitle className='text-2xl font-bold'>My Orders</CardTitle>
@@ -56,9 +57,9 @@ const OrdersListing = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <Button variant='outline' size='icon'>
+          {/* <Button variant='outline' size='icon'>
             <Filter className='h-4 w-4' />
-          </Button>
+          </Button> */}
         </div>
         {/* <ScrollArea className="h-[calc(100vh-200px)] md:hidden">
         {filteredOrders?.map(order => (

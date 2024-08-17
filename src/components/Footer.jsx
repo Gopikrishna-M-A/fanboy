@@ -1,10 +1,10 @@
 "use client"
-import React, { useState } from "react"
-import { useRouter } from "next/navigation"
+import React, { useEffect, useState } from "react"
+import { usePathname, useRouter } from "next/navigation"
 import {
   Home,
   Layers2,
-  Logs,
+  ShoppingBag,
   Mail,
   MapPin,
   Phone,
@@ -43,11 +43,24 @@ const NavItem = ({ id, Icon, label, path, isActive, onClick }) => {
 }
 
 const Footer = () => {
-  const [activeIcon, setActiveIcon] = useState("home")
+  const pathname = usePathname()
+  const [activeIcon, setActiveIcon] = useState("")
   const [cartItems, setCartItems] = useState(0)
   const router = useRouter()
   const today = new Date()
   const currentYear = today.getFullYear()
+
+  useEffect(() => {
+    if (pathname === '/') {
+      setActiveIcon("home")
+    } else if (pathname.includes('/orders')) {
+      setActiveIcon("ShoppingBag")
+    } else if (pathname.includes('/cart')) {
+      setActiveIcon("cart")
+    } else if (pathname.includes('/profile')) {
+      setActiveIcon("profile")
+    }
+  }, [pathname])
 
   const handleNavClick = (id, path) => {
     setActiveIcon(id)
@@ -83,11 +96,11 @@ const Footer = () => {
           onClick={handleNavClick}
         />
         <NavItem
-          id='Logs'
-          Icon={Logs}
+          id='ShoppingBag'
+          Icon={ShoppingBag}
           label='Orders'
           path='/orders'
-          isActive={activeIcon === "Logs"}
+          isActive={activeIcon === "ShoppingBag"}
           onClick={handleNavClick}
         />
         <NavItem
@@ -110,7 +123,7 @@ const Footer = () => {
 
       {/* larger screen footer */}
 
-      <footer className='bg-white hidden md:block '>
+      <footer className='bg-gray-100 hidden md:block '>
         <div className='mx-auto max-w-screen-xl px-4 pb-6 pt-16 sm:px-6 lg:px-8 lg:pt-24'>
           <div className='grid grid-cols-1 gap-8 lg:grid-cols-3'>
             <div>

@@ -12,6 +12,9 @@ import {
   ProductGridSkeleton,
   TeamGridSkeleton,
 } from "@/components/SkeletonComponents"
+import { Filter, Search } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import SportsFashionBanner from "./SportsFashionBanner"
 
 const cardsData = [
   {
@@ -48,6 +51,8 @@ const fetchTeams = async () => {
 }
 
 const Landing = () => {
+  const [searchTerm, setSearchTerm] = useState("")
+
   const {
     data: jerseys,
     isLoading: jerseysLoading,
@@ -71,34 +76,36 @@ const Landing = () => {
     throw new Error("Failed to fetch teams. Please try again later.")
 
   return (
-    <div className='md:pb-20 bg-gray-100 '>
-      {/* Banner Section */}
-      <div className='relative h-52 md:h-96 bg-gray-300'>
-        <Image
-          layout='fill'
-          src='/images/banner/1.jpg'
-          alt='Banner'
-          className='object-cover object-[center_50%]'
-        />
-        <div className='absolute inset-0 bg-green-900 bg-opacity-40 flex items-center justify-center w-screen '>
-          <Link prefetch href='/products' className='w-1/3 md:w-1/4 mx-auto'>
-            <Button
-              variant='secondary'
-              className="w-full py-4 px-6 rounded-full bg-green-400 hover:bg-green-300 text-green-900 font-extrabold text-lg shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 focus:ring-4 focus:ring-green-200 focus:ring-opacity-50 flex items-center justify-center border-2 border-white"
-              >
-              <span>SHOP NOW</span>
-            </Button>
-          </Link>
+    <div className='md:pb-20 pt-5 md:max-w-7xl mx-auto'>
+      {/* <div className="pb-3 flex justify-between">
+    <div className='mb-4 flex space-x-2 w-1/2'>
+          <div className='relative flex-grow '>
+            <Search className='absolute left-2 top-2.5 h-4 w-4 text-gray-500' />
+            <Input
+              type='text'
+              placeholder='Search ...'
+              className='pl-8'
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <Filter className='absolute right-2 top-2.5 h-4 w-4 text-gray-500' />
+          </div>
         </div>
+        <div className="flex gap-3">
+      <Button variant="outline" className='rounded-full font-light'>clubs</Button>
+      <Button variant="outline" className='rounded-full font-light'>International</Button>
+        </div>
+      
+    </div> */}
+      <div className='px-4'>
+        <SportsFashionBanner />
       </div>
 
-      {/* Shop by Category Section */}
-
-      <div className='mt-6 md:mx-auto max-w-screen-xl md:px-4 md:pb-6 md:pt-16 lg:px-8 lg:pt-10'>
+      <div className='mt-6 md:mx-auto px-4 md:pb-6 md:pt-16 lg:pt-10'>
         {teamsLoading ? (
           <TeamGridSkeleton />
         ) : (
-          <div className='flex overflow-x-auto pb-2 hide-scrollbar md:grid md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 md:gap-3 md:overflow-hidden'>
+          <div className='flex overflow-x-auto pb-2 hide-scrollbar md:grid md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 md:gap-3 md:overflow-hidden'>
             {teams?.map((team, index) => (
               <div
                 key={index}
@@ -123,17 +130,17 @@ const Landing = () => {
       </div>
 
       {!jerseysLoading && (
-        <div className='mt-6 md:mx-auto md:max-w-screen-xl md:px-4 md:pb-6 md:pt-16  lg:pt-10 '>
+        <div className='mt-6 md:mx-auto md:pb-6 md:pt-16  lg:pt-10 '>
           <JerseyCardGrid cards={cardsData} />
         </div>
       )}
 
-      <div className='md:mx-auto max-w-screen-xl md:px-4 md:pb-6 md:pt-16 lg:px-8 lg:pt-10'>
-        <div className='px-4 md:mx-auto max-w-screen-xl md:px-4 md:pb-6 md:pt-16 lg:px-8 lg:pt-10'>
+      <div className='md:mx-auto md:pb-6 md:pt-16 lg:pt-10'>
+        <div className='px-4 md:mx-auto md:pb-6 md:pt-16 lg:pt-10'>
           {jerseysLoading ? (
             <ProductGridSkeleton />
           ) : (
-            <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3'>
+            <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-3'>
               {jerseys?.map((jersey) => (
                 <ProductCard key={jersey._id} jersey={jersey} />
               ))}
@@ -142,11 +149,9 @@ const Landing = () => {
         </div>
       </div>
 
-      <div className='py-10 w-full' />
-
       {/* Footer Section */}
-      <footer className='bg-white pb-20 md:hidden '>
-        <div className='mx-auto max-w-screen-xl px-4 pb-8 sm:px-6 lg:px-8 lg:pt-24'>
+      <footer className='bg-gray-100 pb-20 md:hidden '>
+        <div className='mx-auto max-w-screen-xl px-4 pb-4 sm:px-6 lg:px-8 lg:pt-24'>
           <div className='mt-16 border-t border-gray-100 pt-5 sm:flex sm:items-center sm:justify-between lg:mt-24'>
             <ul className='flex flex-wrap justify-center gap-4 text-xs lg:justify-end'>
               <li>

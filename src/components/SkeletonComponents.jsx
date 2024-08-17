@@ -41,7 +41,7 @@ export const TeamSkeleton = () => {
 
 export const ProductGridSkeleton = ({ count = 8 }) => {
   return (
-    <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3'>
+    <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-3'>
       {Array(count)
         .fill(0)
         .map((_, index) => (
@@ -51,9 +51,9 @@ export const ProductGridSkeleton = ({ count = 8 }) => {
   )
 }
 
-export const TeamGridSkeleton = ({ count = 6 }) => {
+export const TeamGridSkeleton = ({ count = 14 }) => {
   return (
-    <div className='flex overflow-x-auto pb-2 hide-scrollbar md:grid md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 md:gap-3 md:overflow-hidden'>
+    <div className='flex overflow-x-auto pb-2 hide-scrollbar md:grid md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 md:gap-3 md:overflow-hidden'>
       {Array(count)
         .fill(0)
         .map((_, index) => (
