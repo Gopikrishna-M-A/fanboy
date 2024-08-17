@@ -15,6 +15,7 @@ import {
 import { Filter, Search } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import SportsFashionBanner from "./SportsFashionBanner"
+import ShopByTeamSection from "./ShopByTeamSection"
 
 const cardsData = [
   {
@@ -101,6 +102,8 @@ const Landing = () => {
         <SportsFashionBanner />
       </div>
 
+      {/* <ShopByTeamSection teams={teams}/> */}
+
       <div className='mt-6 md:mx-auto  md:pb-6 md:pt-16 lg:pt-10'>
         {teamsLoading ? (
           <TeamGridSkeleton />
@@ -115,7 +118,7 @@ const Landing = () => {
                 <Link
                   prefetch
                   href={`/products/team/${team._id}`}
-                  className='w-20 h-20 md:w-40 md:h-40 bg-gray-200 rounded-full md:rounded-sm md:p-10 flex items-center justify-center relative shadow-md'>
+                  className='w-20 h-20 md:w-40 md:h-40 bg-gray-50 border rounded-full md:rounded-sm md:p-10 flex items-center justify-center relative shadow-md'>
                   <Image
                     layout='fill'
                     src={team.logo}
