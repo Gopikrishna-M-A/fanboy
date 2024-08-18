@@ -42,6 +42,8 @@ export async function POST(request) {
 
   
   const { couponCode } = await request.json()
+  console.log("couponCode route ##",couponCode);
+  
   
   try {
     const result = await applyCouponToCart(session.user.id, couponCode)

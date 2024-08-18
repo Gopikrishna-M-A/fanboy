@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext } from 'react'
+import { createContext, useContext, useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { fetchCart, addToCart, updateCartItem, removeFromCart, clearCart } from '../lib/cartQueries'
 import { useAuth } from '@/hooks/useAuth' 
@@ -10,6 +10,7 @@ const CartContext = createContext()
 export const CartProvider = ({ children }) => {
   const queryClient = useQueryClient()
   const { user } = useAuth() 
+  const [couponError, setCouponError] = useState('')
 
   const cartQueryKey = user ? ['cart', user.id] : ['cart', 'anonymous']
 
@@ -96,6 +97,67 @@ export const CartProvider = ({ children }) => {
       queryClient.invalidateQueries({ queryKey: cartQueryKey })
     },
   })
+  
+  const applyCouponMutation = useMutation({
+    mutationFn: async (couponCode) => {
+      const response = await fetch('/api/coupons', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ couponCode }),
+      })
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to apply coupon')
+      }
+      return response.json()
+    },
+    onMutate: async (couponCode) => {
+      await queryClient.cancelQueries({ queryKey: cartQueryKey })
+      const previousCart = queryClient.getQueryData(cartQueryKey)
+      setCouponError('')
+      return { previousCart }
+    },
+    onError: (err, couponCode, context) => {
+      queryClient.setQueryData(cartQueryKey, context.previousCart)
+      setCouponError(err.message)
+    },
+    onSuccess: (newCartData) => {
+      queryClient.setQueryData(cartQueryKey, newCartData.cart)
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: cartQueryKey })
+    },
+  })
+
+  // New mutation for removing a coupon
+  const removeCouponMutation = useMutation({
+    mutationFn: async () => {
+      const response = await fetch('/api/coupons', {
+        method: 'DELETE',
+      })
+      if (!response.ok) {
+        throw new Error('Failed to remove coupon')
+      }
+      return response.json()
+    },
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: cartQueryKey })
+      const previousCart = queryClient.getQueryData(cartQueryKey)
+      setCouponError('')
+      return { previousCart }
+    },
+    onError: (err, variables, context) => {
+      queryClient.setQueryData(cartQueryKey, context.previousCart)
+      setCouponError(err.message)
+    },
+    onSuccess: (newCartData) => {
+      queryClient.setQueryData(cartQueryKey, newCartData)
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: cartQueryKey })
+    },
+  })
+
 
   const cartTotalPrice = cart?.items?.reduce((sum, item) => sum + item?.jersey?.price * item?.quantity, 0) || 0
   const cartTotalQuantity = cart?.items?.reduce((sum, item) => sum + item?.quantity, 0) || 0
@@ -110,8 +172,12 @@ export const CartProvider = ({ children }) => {
         updateCart: updateCartMutation.mutate,
         removeFromCart: removeFromCartMutation.mutate,
         clearCart: clearCartMutation.mutate,
+        applyCoupon: applyCouponMutation.mutate,
+        removeCoupon: removeCouponMutation.mutate,
         cartTotalPrice,
         cartTotalQuantity,
+        couponError,
+        isCouponLoading: applyCouponMutation.isLoading || removeCouponMutation.isLoading,
       }}
     >
       {children}

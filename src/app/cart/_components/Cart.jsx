@@ -19,8 +19,15 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { CartItemSkeleton } from "@/components/SkeletonComponents"
 
 const Cart = ({ setCurrent }) => {
-  const { cart, cartTotalPrice, applyCoupon, removeCoupon, error, isLoading } =
-    useCart()
+  const {
+    cart,
+    cartTotalPrice,
+    error,
+    isLoading,
+    applyCoupon,
+    removeCoupon,
+    couponError,
+  } = useCart()
   const [couponCode, setCouponCode] = useState("")
   const [couponLoading, setCouponLoading] = useState(false)
   // const [couponError, setCouponError] = useState('')
@@ -29,31 +36,55 @@ const Cart = ({ setCurrent }) => {
   )
 
   useEffect(() => {
-    if (cart?.appliedCoupon) {
-      removeCoupon()
-    }
-  }, [cartTotalPrice])
+    console.log("couponLoading", couponLoading)
+  }, [couponLoading])
+
+  // const handleApplyCoupon = async () => {
+  //   try {
+  //     setCouponLoading(true)
+  //     await applyCoupon(couponCode)
+  //     setCouponCode("")
+  //     // setCouponError('')
+  //   } catch (error) {
+  //     console.log(error);
+
+  //     // setCouponError(error.message)
+  //   } finally {
+  //     setCouponLoading(false)
+  //     console.log("couponError",couponError);
+
+  //   }
+  // }
+
+  // const handleRemoveCoupon = async () => {
+  //   try {
+  //     await removeCoupon()
+  //     // setCouponError('')
+  //   } catch (error) {
+  //     // setCouponError(error.message)
+  //   }
+  // }
 
   const handleApplyCoupon = async () => {
     try {
-      setCouponLoading(true)
-      await applyCoupon(couponCode)
-      setCouponCode("")
-      // setCouponError('')
+      if (couponCode) {
+        setCouponLoading(true)
+        const delay = new Promise(resolve => setTimeout(resolve, 500));
+        await Promise.all([delay, applyCoupon(couponCode)]);
+        // Only clear the input if the coupon was successfully applied
+        if (!couponError) {
+          setCouponCode("")
+        }
+      }
     } catch (error) {
-      // setCouponError(error.message)
+      console.error(error)
     } finally {
       setCouponLoading(false)
     }
   }
 
   const handleRemoveCoupon = async () => {
-    try {
-      await removeCoupon()
-      // setCouponError('')
-    } catch (error) {
-      // setCouponError(error.message)
-    }
+    await removeCoupon()
   }
 
   return (
@@ -111,9 +142,9 @@ const Cart = ({ setCurrent }) => {
                 </Button>
               )}
             </div>
-            {error && (
+            {couponError && (
               <Alert variant='destructive' className='mt-2'>
-                <AlertDescription>{error?.message}</AlertDescription>
+                <AlertDescription>{couponError}</AlertDescription>
               </Alert>
             )}
             {cart?.appliedCoupon && (
@@ -139,7 +170,7 @@ const Cart = ({ setCurrent }) => {
           <div className='text-lg font-bold'>
             Total: ₹{(cartTotalPrice - (cart?.discountAmount || 0)).toFixed(2)}
           </div>
-          <Button onClick={() => setCurrent(1)} disabled={hasOutOfStockItems}>
+          <Button onClick={() => setCurrent(1)} disabled={ hasOutOfStockItems || cartTotalPrice - cart?.discountAmount == 0 }>
             {hasOutOfStockItems ? "Items Out of Stock" : "Checkout"}
           </Button>
         </CardFooter>

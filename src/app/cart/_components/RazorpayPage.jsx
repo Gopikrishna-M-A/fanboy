@@ -12,6 +12,8 @@ const RazorpayPage = ({ setCurrent }) => {
   const { user } = useAuth()
   const [paymentSuccess, setPaymentSuccess] = useState(false);
 
+  
+
 
   function transformArray(originalArray) {
     return originalArray.map(item => {
