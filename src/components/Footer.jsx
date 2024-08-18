@@ -68,7 +68,7 @@ const Footer = () => {
 
   return (
     <nav className='fixed bottom-0 left-0 right-0 p-2 md:static z-50'>
-      <div className='relative flex justify-around items-center h-16 rounded-full md:hidden bg-white bg-opacity-20 shadow-lg backdrop-blur-sm border border-white border-opacity-30'>
+      <div className='relative flex justify-around items-center h-16 rounded-full md:hidden bg-white bg-opacity-20 shadow-lg backdrop-blur-lg border border-white border-opacity-30'>
         <svg className='absolute inset-0 w-full h-full'>
           <defs>
             <filter id='goo'>
