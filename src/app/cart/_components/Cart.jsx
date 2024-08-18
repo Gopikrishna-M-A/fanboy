@@ -145,7 +145,7 @@ const Cart = ({ setCurrent }) => {
         </CardFooter>
       </Card>
 
-      <div className='flex justify-end items-end w-full'>
+      <div className='flex justify-end items-end w-full mb-16'>
         <Link href={"mailto:fanboysale@gmail.com"}>
           <Button className='py-1 px-4 text-sm' variant='outline'>
             <CircleHelp className='mr-2 h-4 w-4' /> Need Help?

@@ -254,7 +254,11 @@ const ProductDetails = ({ id }) => {
                 </Button>
               ) : (
                 <Button
-                  className={`w-full`}
+                  className={`w-full ${
+                    cartButtonClicked
+                      ? 'bg-[hsl(120,100%,27%)] hover:bg-[hsl(120,100%,22%)]'
+                      : ''
+                  }`}
                   size='lg'
                   onClick={handleAddToCart}
                   disabled={!selectedSize || jersey.stock < 1}>
