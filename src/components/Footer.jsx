@@ -24,7 +24,10 @@ const NavItem = ({ id, Icon, label, path, isActive, onClick }) => {
       className={`
       relative z-20 flex flex-col items-center justify-center w-12 h-12
       transition-all duration-300 ease-in-out
-      ${isActive ? "text-black" : "text-gray-500 hover:text-gray-200"}
+      ${isActive 
+        ? "text-black" 
+        : "text-white hover:text-gray-200"
+      }
     `}
       onClick={() => onClick(id, path)}>
       <div className='relative'>
@@ -68,7 +71,7 @@ const Footer = () => {
 
   return (
     <nav className='fixed bottom-0 left-0 right-0 p-2 md:static z-50'>
-      <div className='relative flex justify-around items-center h-16 rounded-full md:hidden bg-white bg-opacity-20 shadow-lg backdrop-blur-lg border border-white border-opacity-30'>
+      <div className='relative flex justify-around items-center h-16 rounded-full md:hidden bg-black bg-opacity-20 shadow-lg backdrop-blur-lg border border-white border-opacity-30'>
         <svg className='absolute inset-0 w-full h-full'>
           <defs>
             <filter id='goo'>
