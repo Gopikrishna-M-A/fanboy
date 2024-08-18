@@ -27,60 +27,24 @@ const Cart = ({ setCurrent }) => {
     applyCoupon,
     removeCoupon,
     couponError,
+    isCouponLoading,
+    isCouponRemoveLoading
   } = useCart()
   const [couponCode, setCouponCode] = useState("")
-  const [couponLoading, setCouponLoading] = useState(false)
   // const [couponError, setCouponError] = useState('')
   const hasOutOfStockItems = cart?.items?.some(
     (item) => item?.jersey?.stock === 0
   )
 
-  useEffect(() => {
-    console.log("couponLoading", couponLoading)
-  }, [couponLoading])
 
-  // const handleApplyCoupon = async () => {
-  //   try {
-  //     setCouponLoading(true)
-  //     await applyCoupon(couponCode)
-  //     setCouponCode("")
-  //     // setCouponError('')
-  //   } catch (error) {
-  //     console.log(error);
-
-  //     // setCouponError(error.message)
-  //   } finally {
-  //     setCouponLoading(false)
-  //     console.log("couponError",couponError);
-
-  //   }
-  // }
-
-  // const handleRemoveCoupon = async () => {
-  //   try {
-  //     await removeCoupon()
-  //     // setCouponError('')
-  //   } catch (error) {
-  //     // setCouponError(error.message)
-  //   }
-  // }
 
   const handleApplyCoupon = async () => {
-    try {
       if (couponCode) {
-        setCouponLoading(true)
-        const delay = new Promise(resolve => setTimeout(resolve, 500));
-        await Promise.all([delay, applyCoupon(couponCode)]);
-        // Only clear the input if the coupon was successfully applied
+        await applyCoupon(couponCode)
         if (!couponError) {
           setCouponCode("")
         }
       }
-    } catch (error) {
-      console.error(error)
-    } finally {
-      setCouponLoading(false)
-    }
   }
 
   const handleRemoveCoupon = async () => {
@@ -131,7 +95,7 @@ const Cart = ({ setCurrent }) => {
                 value={couponCode}
                 onChange={(e) => setCouponCode(e.target.value)}
               />
-              {couponLoading ? (
+              {isCouponLoading ? (
                 <Button disabled>
                   <Loader2 className='mr-2 h-4 w-4 animate-spin' />
                   Applying
@@ -154,7 +118,9 @@ const Cart = ({ setCurrent }) => {
                   Coupon applied: {cart?.appliedCoupon?.code}
                 </span>
                 <Button variant='ghost' size='sm' onClick={handleRemoveCoupon}>
-                  Remove
+                  {isCouponRemoveLoading 
+                  ? <> <Loader2 className='mr-2 h-4 w-4 animate-spin' /> Removing</>
+                   : 'Remove'}
                 </Button>
               </div>
             )}

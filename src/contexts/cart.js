@@ -11,6 +11,9 @@ export const CartProvider = ({ children }) => {
   const queryClient = useQueryClient()
   const { user } = useAuth() 
   const [couponError, setCouponError] = useState('')
+  const [isCouponLoading, setIsCouponLoading] = useState(false)
+  const [isCouponRemoveLoading, setIsCouponRemoveLoading] = useState(false)
+
 
   const cartQueryKey = user ? ['cart', user.id] : ['cart', 'anonymous']
 
@@ -100,6 +103,7 @@ export const CartProvider = ({ children }) => {
   
   const applyCouponMutation = useMutation({
     mutationFn: async (couponCode) => {
+      setIsCouponLoading(true)
       const response = await fetch('/api/coupons', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -126,12 +130,14 @@ export const CartProvider = ({ children }) => {
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: cartQueryKey })
+      setIsCouponLoading(false)
     },
   })
 
   // New mutation for removing a coupon
   const removeCouponMutation = useMutation({
     mutationFn: async () => {
+      setIsCouponRemoveLoading(true)
       const response = await fetch('/api/coupons', {
         method: 'DELETE',
       })
@@ -155,6 +161,7 @@ export const CartProvider = ({ children }) => {
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: cartQueryKey })
+      setIsCouponRemoveLoading(false)
     },
   })
 
@@ -177,7 +184,8 @@ export const CartProvider = ({ children }) => {
         cartTotalPrice,
         cartTotalQuantity,
         couponError,
-        isCouponLoading: applyCouponMutation.isLoading || removeCouponMutation.isLoading,
+        isCouponLoading,
+        isCouponRemoveLoading
       }}
     >
       {children}
