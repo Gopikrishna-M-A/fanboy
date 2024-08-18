@@ -33,8 +33,8 @@ export const ProductCardSkeleton = () => {
 
 export const TeamSkeleton = () => {
   return (
-    <div className='w-20 h-20 md:w-40 md:h-40 bg-gray-200 rounded-full md:rounded-sm md:p-10 flex items-center justify-center relative shadow-md'>
-      <Skeleton className='w-full h-full rounded-full md:rounded-sm' />
+    <div className='w-20 h-20 md:w-40 md:h-40 bg-gray-50 rounded-full md:rounded-sm animate-pulse md:p-10 flex items-center justify-center relative shadow-sm'>
+      {/* <Skeleton className='w-full h-full rounded-full md:rounded-sm' /> */}
     </div>
   )
 }
