@@ -22,7 +22,7 @@ const JerseyCard = ({ imageUrl, title, subtitle, path }) => {
 
 const JerseyCardGrid = ({ cards }) => {
   return (
-    <div className="grid grid-cols-2 gap-4 p-4 md:flex">
+    <div className="grid grid-cols-2 gap-4 p-4 xl:px-0 md:flex">
       {cards.map((card, index) => (
         <JerseyCard key={index} {...card} />
       ))}

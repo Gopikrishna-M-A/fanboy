@@ -98,13 +98,13 @@ const Landing = () => {
         </div>
       
     </div> */}
-      <div className='px-4'>
+      <div className='px-4 xl:px-0'>
         <SportsFashionBanner />
       </div>
 
       {/* <ShopByTeamSection teams={teams}/> */}
 
-      <div className='mt-6 md:mx-auto  md:pb-6 md:pt-16 lg:pt-10'>
+      <div className='mt-6 md:mx-auto px-0 md:px-4 xl:px-0 md:pb-6 md:pt-16 lg:pt-10'>
         {teamsLoading ? (
           <TeamGridSkeleton />
         ) : (
@@ -139,7 +139,7 @@ const Landing = () => {
       )}
 
       <div className='md:mx-auto md:pb-6 md:pt-16 lg:pt-10'>
-        <div className='px-4 md:mx-auto md:pb-6 md:pt-16 lg:pt-10'>
+        <div className='px-4 xl:px-0 md:mx-auto md:pb-6 md:pt-16 lg:pt-10'>
           {jerseysLoading ? (
             <ProductGridSkeleton />
           ) : (
